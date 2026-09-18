@@ -21,6 +21,9 @@ import {
   Save,
   Loader2,
   CheckCircle,
+  Key,
+  BarChart3,
+  Trash2,
 } from 'lucide-react'
 
 const THEMES = [
@@ -372,5 +375,5 @@ function AppearanceTab({ formData, setFormData }: any) {
   )
 }
 
-import { Key, CheckCircle, BarChart3, Monitor, Trash2 } from 'lucide-react'
+
 
