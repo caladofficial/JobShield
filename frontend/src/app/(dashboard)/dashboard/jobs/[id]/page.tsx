@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { cn, formatDate, formatCurrency, getRiskBadgeClass, getStatusBadgeClass, getStatusLabel } from '@/lib/utils'
 import { jobsApi, verificationApi } from '@/lib/api'
 import { JobResponse, JobVerificationResponse, RiskEventResponse, ContactInfo } from '@/types/job'
@@ -9,6 +8,7 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs'
+import { Animated } from '@/components/ui/Animated'
 import {
   ExternalLink,
   ShieldCheck,
@@ -103,7 +103,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+    <Animated initial="fade" duration={300}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -130,7 +130,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-2 space-y-6">
+        <Animated initial="slideUp" delay={100} className="lg:col-span-2 space-y-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList className="bg-surface-secondary rounded-xl p-1">
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -199,37 +199,33 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   {job.contacts && job.contacts.length > 0 ? (
                     <div className="space-y-3">
                       {job.contacts.map((contact: ContactInfo, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                          className="flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50"
-                        >
-                          <div className="flex items-center gap-3">
-                            {contact.type === 'email' && <Mail className="w-5 h-5 text-green-400" />}
-                            {contact.type === 'phone' && <Phone className="w-5 h-5 text-blue-400" />}
-                            {contact.type === 'website' && <Globe className="w-5 h-5 text-purple-400" />}
-                            {contact.type === 'application_url' && <LinkIcon className="w-5 h-5 text-orange-400" />}
-                            <div>
-                              <p className="font-medium text-primary-text">{contact.normalized_value}</p>
-                              <p className="text-xs text-secondary-text capitalize">{contact.type.replace('_', ' ')}</p>
+                        <Animated key={index} initial="slideUp" delay={index * 50}>
+                          <div className="flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50">
+                            <div className="flex items-center gap-3">
+                              {contact.type === 'email' && <Mail className="w-5 h-5 text-green-400" />}
+                              {contact.type === 'phone' && <Phone className="w-5 h-5 text-blue-400" />}
+                              {contact.type === 'website' && <Globe className="w-5 h-5 text-purple-400" />}
+                              {contact.type === 'application_url' && <LinkIcon className="w-5 h-5 text-orange-400" />}
+                              <div>
+                                <p className="font-medium text-primary-text">{contact.normalized_value}</p>
+                                <p className="text-xs text-secondary-text capitalize">{contact.type.replace('_', ' ')}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {contact.is_valid ? (
+                                <Check className="w-4 h-4 text-green-400" />
+                              ) : (
+                                <X className="w-4 h-4 text-red-400" />
+                              )}
+                              <Badge variant={contact.is_corporate ? 'success' : 'outline'} className="text-xs">
+                                {contact.is_corporate ? 'Corporate' : 'Free Mail'}
+                              </Badge>
+                              <Badge variant="outline" className="text-xs">
+                                {Math.round(contact.confidence * 100)}%
+                              </Badge>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            {contact.is_valid ? (
-                              <Check className="w-4 h-4 text-green-400" />
-                            ) : (
-                              <X className="w-4 h-4 text-red-400" />
-                            )}
-                            <Badge variant={contact.is_corporate ? 'success' : 'outline'} className="text-xs">
-                              {contact.is_corporate ? 'Corporate' : 'Free Mail'}
-                            </Badge>
-                            <Badge variant="outline" className="text-xs">
-                              {Math.round(contact.confidence * 100)}%
-                            </Badge>
-                          </div>
-                        </motion.div>
+                        </Animated>
                       ))}
                     </div>
                   ) : (
@@ -259,12 +255,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                         const signals = verification[`${stage.key}_signals`] as Record<string, any>
 
                         return (
-                          <motion.div
-                            key={stage.key}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.05 }}
-                          >
+                          <Animated key={stage.key} initial="slideUp" delay={index * 50}>
                             <button
                               onClick={() => toggleSection(stage.key)}
                               className="w-full flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50 hover:border-border transition-colors"
@@ -288,27 +279,17 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                                 <ChevronDown className={cn('w-4 h-4 text-secondary-text transition-transform', expandedSections[stage.key] && 'rotate-180')} />
                               </div>
                             </button>
-                            <AnimatePresence>
-                              {expandedSections[stage.key] && (
-                                <motion.div
-                                  initial={{ opacity: 0, height: 0 }}
-                                  animate={{ opacity: 1, height: 'auto' }}
-                                  exit={{ opacity: 0, height: 0 }}
-                                  transition={{ duration: 0.2 }}
-                                  className="mt-2 ml-14 space-y-2"
-                                >
-                                  {Object.entries(signals).map(([key, value]) => (
-                                    <div key={key} className="flex items-center justify-between text-sm">
-                                      <span className="text-secondary-text">{key.replace(/_/g, ' ')}</span>
-                                      <span className={value ? 'text-green-400' : 'text-red-400'}>
-                                        {value ? '✓ Passed' : '✗ Failed'}
-                                      </span>
-                                    </div>
-                                  ))}
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </motion.div>
+                            <Animated initial="slideDown" className="mt-2 ml-14 space-y-2" key={`${stage.key}-details`}>
+                              {expandedSections[stage.key] && Object.entries(signals).map(([key, value]) => (
+                                <div key={key} className="flex items-center justify-between text-sm">
+                                  <span className="text-secondary-text">{key.replace(/_/g, ' ')}</span>
+                                  <span className={value ? 'text-green-400' : 'text-red-400'}>
+                                    {value ? '✓ Passed' : '✗ Failed'}
+                                  </span>
+                                </div>
+                              ))}
+                            </Animated>
+                          </Animated>
                         )
                       })}
                     </div>
@@ -381,28 +362,24 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   {riskEvents.length > 0 ? (
                     <div className="space-y-3">
                       {riskEvents.map((event, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                          className="p-3 rounded-xl bg-surface-secondary/50 border border-border/50"
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0', event.severity === 'high' && 'bg-red-500/20', event.severity === 'medium' && 'bg-yellow-500/20', event.severity === 'low' && 'bg-green-500/20')}>
-                              {event.severity === 'high' && <AlertTriangle className="w-4 h-4 text-red-400" />}
-                              {event.severity === 'medium' && <AlertTriangle className="w-4 h-4 text-yellow-400" />}
-                              {event.severity === 'low' && <ShieldCheck className="w-4 h-4 text-green-400" />}
-                            </div>
-                            <div className="flex-1">
-                              <p className="font-medium text-primary-text">{event.signal.replace(/_/g, ' ')}</p>
-                              <p className="text-sm text-secondary-text mt-1">{event.description}</p>
-                              <Badge variant={event.severity === 'high' ? 'danger' : event.severity === 'medium' ? 'warning' : 'success'} className="mt-2 text-xs">
-                                {event.severity}
-                              </Badge>
+                        <Animated key={index} initial="slideUp" delay={index * 50}>
+                          <div className="p-3 rounded-xl bg-surface-secondary/50 border border-border/50">
+                            <div className="flex items-start gap-3">
+                              <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0', event.severity === 'high' && 'bg-red-500/20', event.severity === 'medium' && 'bg-yellow-500/20', event.severity === 'low' && 'bg-green-500/20')}>
+                                {event.severity === 'high' && <AlertTriangle className="w-4 h-4 text-red-400" />}
+                                {event.severity === 'medium' && <AlertTriangle className="w-4 h-4 text-yellow-400" />}
+                                {event.severity === 'low' && <ShieldCheck className="w-4 h-4 text-green-400" />}
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-medium text-primary-text">{event.signal.replace(/_/g, ' ')}</p>
+                                <p className="text-sm text-secondary-text mt-1">{event.description}</p>
+                                <Badge variant={event.severity === 'high' ? 'danger' : event.severity === 'medium' ? 'warning' : 'success'} className="mt-2 text-xs">
+                                  {event.severity}
+                                </Badge>
+                              </div>
                             </div>
                           </div>
-                        </motion.div>
+                        </Animated>
                       ))}
                     </div>
                   ) : (
@@ -435,9 +412,9 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
               </Card>
             </TabsContent>
           </Tabs>
-        </motion.div>
+        </Animated>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+        <Animated initial="slideUp" delay={200}>
           <Card variant="elevated" className="sticky top-24">
             <h3 className="font-medium text-primary-text mb-4">Quick Actions</h3>
             <div className="space-y-2">
@@ -470,7 +447,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   { label: 'Contacts', score: verification.contact_score },
                   { label: 'Risk (inverted)', score: 100 - verification.risk_score },
                 ].map((item, index) => (
-                  <motion.div key={item.label} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}>
+                  <Animated key={item.label} initial="slideUp" delay={index * 50}>
                     <div className="flex items-center justify-between">
                       <span className="text-secondary-text">{item.label}</span>
                       <span className={cn('font-mono font-bold', item.score >= 70 ? 'text-green-400' : item.score >= 40 ? 'text-yellow-400' : 'text-red-400')}>
@@ -478,21 +455,19 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                       </span>
                     </div>
                     <div className="h-1.5 bg-surface-secondary rounded-full overflow-hidden mt-1">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${item.score}%` }}
-                        transition={{ delay: 0.3 + index * 0.05, type: 'spring', stiffness: 100 }}
+                      <div
                         className={cn('h-full rounded-full', item.score >= 70 ? 'bg-green-400' : item.score >= 40 ? 'bg-yellow-400' : 'bg-red-400')}
+                        style={{ width: `${item.score}%` }}
                       />
                     </div>
-                  </motion.div>
+                  </Animated>
                 ))}
               </dl>
             </div>
           </Card>
-        </motion.div>
+        </Animated>
       </div>
-    </motion.div>
+    </Animated>
   )
 }
 

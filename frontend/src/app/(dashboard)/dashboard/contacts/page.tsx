@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { cn, formatDate } from '@/lib/utils'
 import { contactsApi } from '@/lib/api'
 import { ContactType, PaginatedResponse } from '@/types/dashboard'
@@ -9,6 +8,7 @@ import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
+import { Animated } from '@/components/ui/Animated'
 import {
   Mail,
   Phone,
@@ -20,8 +20,6 @@ import {
   ChevronDown,
   ChevronUp,
   RefreshCw,
-  XCircle,
-  HelpCircle,
 } from 'lucide-react'
 
 const TYPE_OPTIONS = [
@@ -130,7 +128,7 @@ export default function ContactsPage() {
             </div>
           </div>
         )
-      ),
+      },
     },
     {
       header: 'Type',
@@ -189,8 +187,8 @@ export default function ContactsPage() {
   ]
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <Animated initial="fade" duration={300}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-primary-text">Contacts</h1>
           <p className="text-secondary-text mt-1">Extracted contact information from job postings</p>
@@ -202,15 +200,15 @@ export default function ContactsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-        <StatCard label="Total Contacts" value={stats.total_contacts} icon={<Mail />} color="text-blue-400" bg="bg-blue-500/10" />
-        <StatCard label="Corporate Emails" value={stats.corporate_emails} icon={<Building2 />} color="text-green-400" bg="bg-green-500/10" />
-        <StatCard label="Free Mail" value={stats.free_mail_addresses} icon={<Mail />} color="text-yellow-400" bg="bg-yellow-500/10" />
-        <StatCard label="Valid Phones" value={stats.valid_phones} icon={<Phone />} color="text-orange-400" bg="bg-orange-500/10" />
-        <StatCard label="Invalid" value={stats.invalid_contacts} icon={<XCircle />} color="text-red-400" bg="bg-red-500/10" />
-        <StatCard label="Unverified" value={stats.unverified_contacts} icon={<HelpCircle />} color="text-gray-400" bg="bg-gray-500/10" />
+        <Animated initial="slideUp" delay={0}><StatCard label="Total Contacts" value={stats.total_contacts} icon={<Mail />} color="text-blue-400" bg="bg-blue-500/10" /></Animated>
+        <Animated initial="slideUp" delay={50}><StatCard label="Corporate Emails" value={stats.corporate_emails} icon={<Building2 />} color="text-green-400" bg="bg-green-500/10" /></Animated>
+        <Animated initial="slideUp" delay={100}><StatCard label="Free Mail" value={stats.free_mail_addresses} icon={<Mail />} color="text-yellow-400" bg="bg-yellow-500/10" /></Animated>
+        <Animated initial="slideUp" delay={150}><StatCard label="Valid Phones" value={stats.valid_phones} icon={<Phone />} color="text-orange-400" bg="bg-orange-500/10" /></Animated>
+        <Animated initial="slideUp" delay={200}><StatCard label="Invalid" value={stats.invalid_contacts} icon={<XCircle />} color="text-red-400" bg="bg-red-500/10" /></Animated>
+        <Animated initial="slideUp" delay={250}><StatCard label="Unverified" value={stats.unverified_contacts} icon={<HelpCircle />} color="text-gray-400" bg="bg-gray-500/10" /></Animated>
       </div>
 
-      <div className="card p-4">
+      <Card className="p-4">
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary-text" />
@@ -229,53 +227,51 @@ export default function ContactsPage() {
           </Button>
         </div>
 
-        {showFilters && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="mt-4 pt-4 border-t border-border grid grid-cols-1 sm:grid-cols-4 gap-3"
-          >
-            <select
-              value={filters.contact_type}
-              onChange={(e) => setFilters(prev => ({ ...prev, contact_type: e.target.value }))}
-              className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
-            >
-              {TYPE_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-            <select
-              value={filters.is_valid}
-              onChange={(e) => setFilters(prev => ({ ...prev, is_valid: e.target.value }))}
-              className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
-            >
-              {VALIDITY_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-            <select
-              value={filters.is_corporate}
-              onChange={(e) => setFilters(prev => ({ ...prev, is_corporate: e.target.value }))}
-              className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
-            >
-              {CORPORATE_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-          </motion.div>
-        )}
-      </div>
+        <Animated initial="slideDown" className="mt-4 pt-4 border-t border-border grid grid-cols-1 sm:grid-cols-4 gap-3">
+          {showFilters && (
+            <>
+              <select
+                value={filters.contact_type}
+                onChange={(e) => setFilters(prev => ({ ...prev, contact_type: e.target.value }))}
+                className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                {TYPE_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+              </select>
+              <select
+                value={filters.is_valid}
+                onChange={(e) => setFilters(prev => ({ ...prev, is_valid: e.target.value }))}
+                className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                {VALIDITY_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+              </select>
+              <select
+                value={filters.is_corporate}
+                onChange={(e) => setFilters(prev => ({ ...prev, is_corporate: e.target.value }))}
+                className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                {CORPORATE_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+              </select>
+            </>
+          )}
+        </Animated>
+      </Card>
 
-      <DataTable
-        columns={columns}
-        data={contacts}
-        loading={loading}
-        emptyMessage="No contacts found"
-        pagination={{
-          page,
-          pageSize,
-          total,
-          onPageChange: setPage,
-          onPageSizeChange: setPageSize,
-        }}
-      />
-    </div>
+      <Animated initial="slideUp" delay={200}>
+        <DataTable
+          columns={columns}
+          data={contacts}
+          loading={loading}
+          emptyMessage="No contacts found"
+          pagination={{
+            page,
+            pageSize,
+            total,
+            onPageChange: setPage,
+            onPageSizeChange: setPageSize,
+          }}
+        />
+      </Animated>
+    </Animated>
   )
 }
 
@@ -295,5 +291,4 @@ function StatCard({ label, value, icon: Icon, color, bg }: any) {
   )
 }
 
-
-
+import { XCircle, HelpCircle } from 'lucide-react'

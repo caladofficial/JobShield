@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import {
   Briefcase,
   ShieldCheck,
@@ -21,8 +20,9 @@ import { RiskDistributionChart } from '@/components/dashboard/RiskDistributionCh
 import { RecentJobsTable } from '@/components/dashboard/RecentJobsTable'
 import { SourceHealthCards } from '@/components/dashboard/SourceHealthCards'
 import { analyticsApi } from '@/lib/api'
-import { DashboardResponse, JobListItem } from '@/types/dashboard'
+import { DashboardResponse } from '@/types/dashboard'
 import { cn } from '@/lib/utils'
+import { Animated } from '@/components/ui/Animated'
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardResponse | null>(null)
@@ -63,9 +63,9 @@ export default function DashboardPage() {
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((_, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+            <Animated key={i} initial="slideUp" delay={i * 50}>
               <StatCardSkeleton />
-            </motion.div>
+            </Animated>
           ))}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -96,7 +96,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+    <Animated initial="fade" duration={300}>
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-primary-text">Dashboard</h1>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {stats.map((stat, index) => (
-          <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}>
+          <Animated key={stat.label} initial="slideUp" delay={index * 50}>
             <StatCard
               label={stat.label}
               value={stat.value}
@@ -118,12 +118,12 @@ export default function DashboardPage() {
               iconColor={stat.color}
               iconBg={stat.bg}
             />
-          </motion.div>
+          </Animated>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        <Animated initial="slideUp" delay={100}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Verification Activity</h3>
@@ -131,9 +131,9 @@ export default function DashboardPage() {
             </div>
             <VerificationActivityChart data={data?.verification_activity.data ?? []} />
           </Card>
-        </motion.div>
+        </Animated>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+        <Animated initial="slideUp" delay={150}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Jobs by Source</h3>
@@ -141,9 +141,9 @@ export default function DashboardPage() {
             </div>
             <JobsBySourceChart data={data?.jobs_by_source.data ?? []} />
           </Card>
-        </motion.div>
+        </Animated>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+        <Animated initial="slideUp" delay={200}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Risk Distribution</h3>
@@ -151,20 +151,20 @@ export default function DashboardPage() {
             </div>
             <RiskDistributionChart data={data?.risk_distribution.data ?? []} />
           </Card>
-        </motion.div>
+        </Animated>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+        <Animated initial="slideUp" delay={250}>
           <RecentJobsTable jobs={data?.recent_jobs ?? []} />
-        </motion.div>
+        </Animated>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+        <Animated initial="slideUp" delay={300}>
           <SourceHealthCards sources={data?.source_health ?? []} />
-        </motion.div>
+        </Animated>
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+      <Animated initial="slideUp" delay={350}>
         <Card>
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-medium text-primary-text">Recent Activity</h3>
@@ -172,30 +172,26 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin">
             {data?.recent_events?.map((event, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + index * 0.05 }}
-                className="flex items-center gap-3 p-3 rounded-xl bg-surface-secondary/50"
-              >
-                <div className="w-2 h-2 rounded-full bg-accent" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-primary-text truncate">{event.message}</p>
-                  <p className="text-xs text-secondary-text">{new Date(event.created_at).toLocaleString()}</p>
+              <Animated key={index} initial="slideUp" delay={400 + index * 50}>
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-secondary/50">
+                  <div className="w-2 h-2 rounded-full bg-accent" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-primary-text truncate">{event.message}</p>
+                    <p className="text-xs text-secondary-text">{new Date(event.created_at).toLocaleString()}</p>
+                  </div>
+                  <span className={cn('badge px-2 py-0.5', event.level === 'error' && 'bg-red-500/20 text-red-400', event.level === 'warning' && 'bg-yellow-500/20 text-yellow-400', event.level === 'info' && 'bg-blue-500/20 text-blue-400')}>
+                    {event.level}
+                  </span>
                 </div>
-                <span className={cn('badge px-2 py-0.5', event.level === 'error' && 'bg-red-500/20 text-red-400', event.level === 'warning' && 'bg-yellow-500/20 text-yellow-400', event.level === 'info' && 'bg-blue-500/20 text-blue-400')}>
-                  {event.level}
-                </span>
-              </motion.div>
+              </Animated>
             ))}
             {(!data?.recent_events || data.recent_events.length === 0) && (
               <p className="text-secondary-text text-center py-8">No recent activity</p>
             )}
           </div>
         </Card>
-      </motion.div>
-    </motion.div>
+      </Animated>
+    </Animated>
   )
 }
 
@@ -246,4 +242,3 @@ function CardSkeleton() {
     </Card>
   )
 }
-
