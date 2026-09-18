@@ -106,3 +106,4 @@ export function RecentJobsTable({ jobs, className }: RecentJobsTableProps) {
     </div>
   )
 }
+

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { cn, formatDate } from '@/lib/utils'
 import { sourcesApi } from '@/lib/api'
 import { SourceResponse, SourceConnectionResponse, SourceStatus } from '@/types/dashboard'
-import { Card } from '@/components/ui/card'
+import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
@@ -377,3 +377,4 @@ export default function SourcesPage() {
     </div>
   )
 }
+

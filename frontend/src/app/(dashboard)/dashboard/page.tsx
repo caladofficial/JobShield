@@ -13,7 +13,7 @@ import {
   Activity,
   RefreshCw,
 } from 'lucide-react'
-import { Card } from '@/components/ui/card'
+import { Card } from '@/components/ui/Card'
 import { StatCard } from '@/components/dashboard/StatCard'
 import { VerificationActivityChart } from '@/components/dashboard/VerificationActivityChart'
 import { JobsBySourceChart } from '@/components/dashboard/JobsBySourceChart'
@@ -246,3 +246,4 @@ function CardSkeleton() {
     </Card>
   )
 }
+

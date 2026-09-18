@@ -8,7 +8,7 @@ import { ContactType, PaginatedResponse } from '@/types/dashboard'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
-import { Card } from '@/components/ui/card'
+import { Card } from '@/components/ui/Card'
 import {
   Mail,
   Phone,
@@ -294,3 +294,4 @@ function StatCard({ label, value, icon: Icon, color, bg }: any) {
 }
 
 import { XCircle, HelpCircle } from 'lucide-react'
+

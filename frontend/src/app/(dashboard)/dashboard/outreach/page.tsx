@@ -8,7 +8,7 @@ import { EmailCampaignResponse, EmailRecipientResponse, PaginatedResponse } from
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
-import { Card } from '@/components/ui/card'
+import { Card } from '@/components/ui/Card'
 import { Modal } from '@/components/ui/Modal'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
@@ -481,3 +481,4 @@ export default function OutreachPage() {
 }
 
 import { Users } from 'lucide-react'
+

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { analyticsApi } from '@/lib/api'
 import { DashboardResponse } from '@/types/dashboard'
-import { Card } from '@/components/ui/card'
+import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { VerificationActivityChart } from '@/components/dashboard/VerificationActivityChart'
 import { JobsBySourceChart } from '@/components/dashboard/JobsBySourceChart'
@@ -191,3 +191,4 @@ function MetricCard({ label, value, suffix = '', icon: Icon, color, bg }: any) {
 }
 
 import { Mail, Building2 } from 'lucide-react'
+

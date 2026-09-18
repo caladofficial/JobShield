@@ -20,3 +20,4 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
 )
 
 Input.displayName = 'Input'
+

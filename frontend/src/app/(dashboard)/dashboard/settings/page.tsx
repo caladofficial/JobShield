@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { Card } from '@/components/ui/card'
+import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { cn } from '@/lib/utils'
 import {
@@ -373,3 +373,4 @@ function AppearanceTab({ formData, setFormData }: any) {
 }
 
 import { Key, CheckCircle, BarChart3, Monitor, Trash2 } from 'lucide-react'
+

@@ -9,7 +9,7 @@ import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
-import { Card } from '@/components/ui/card'
+import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import {
   Search,
@@ -454,3 +454,4 @@ export default function JobsPage() {
     </div>
   )
 }
+

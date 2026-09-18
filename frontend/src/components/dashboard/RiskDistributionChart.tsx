@@ -99,3 +99,4 @@ export function RiskDistributionChart({ data, className }: RiskDistributionChart
     </div>
   )
 }
+

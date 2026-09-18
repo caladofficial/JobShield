@@ -95,3 +95,4 @@ export function JobsBySourceChart({ data, className }: JobsBySourceChartProps) {
     </div>
   )
 }
+

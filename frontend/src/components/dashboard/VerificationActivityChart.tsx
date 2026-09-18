@@ -75,3 +75,4 @@ export function VerificationActivityChart({ data, className }: VerificationActiv
     </div>
   )
 }
+
