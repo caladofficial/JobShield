@@ -22,7 +22,7 @@ import { SourceHealthCards } from '@/components/dashboard/SourceHealthCards'
 import { analyticsApi } from '@/lib/api'
 import { DashboardResponse } from '@/types/dashboard'
 import { cn } from '@/lib/utils'
-import { Animated } from '@/components/ui/Animated'
+import { FadeIn, SlideUp } from '@/components/ui/Animated'
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardResponse | null>(null)
@@ -63,9 +63,9 @@ export default function DashboardPage() {
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((_, i) => (
-            <Animated key={i} initial="slideUp" delay={i * 50}>
+            <FadeIn key={i} delay={i * 50}>
               <StatCardSkeleton />
-            </Animated>
+            </FadeIn>
           ))}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -96,7 +96,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <Animated initial="fade" duration={300}>
+    <FadeIn duration={300}>
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-primary-text">Dashboard</h1>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {stats.map((stat, index) => (
-          <Animated key={stat.label} initial="slideUp" delay={index * 50}>
+          <SlideUp key={stat.label} delay={index * 50}>
             <StatCard
               label={stat.label}
               value={stat.value}
@@ -118,12 +118,12 @@ export default function DashboardPage() {
               iconColor={stat.color}
               iconBg={stat.bg}
             />
-          </Animated>
+          </SlideUp>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <Animated initial="slideUp" delay={100}>
+        <SlideUp delay={100}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Verification Activity</h3>
@@ -131,9 +131,9 @@ export default function DashboardPage() {
             </div>
             <VerificationActivityChart data={data?.verification_activity.data ?? []} />
           </Card>
-        </Animated>
+        </SlideUp>
 
-        <Animated initial="slideUp" delay={150}>
+        <SlideUp delay={150}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Jobs by Source</h3>
@@ -141,9 +141,9 @@ export default function DashboardPage() {
             </div>
             <JobsBySourceChart data={data?.jobs_by_source.data ?? []} />
           </Card>
-        </Animated>
+        </SlideUp>
 
-        <Animated initial="slideUp" delay={200}>
+        <SlideUp delay={200}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Risk Distribution</h3>
@@ -151,20 +151,20 @@ export default function DashboardPage() {
             </div>
             <RiskDistributionChart data={data?.risk_distribution.data ?? []} />
           </Card>
-        </Animated>
+        </SlideUp>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <Animated initial="slideUp" delay={250}>
+        <SlideUp delay={250}>
           <RecentJobsTable jobs={data?.recent_jobs ?? []} />
-        </Animated>
+        </SlideUp>
 
-        <Animated initial="slideUp" delay={300}>
+        <SlideUp delay={300}>
           <SourceHealthCards sources={data?.source_health ?? []} />
-        </Animated>
+        </SlideUp>
       </div>
 
-      <Animated initial="slideUp" delay={350}>
+      <SlideUp delay={350}>
         <Card>
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-medium text-primary-text">Recent Activity</h3>
@@ -172,7 +172,7 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin">
             {data?.recent_events?.map((event, index) => (
-              <Animated key={index} initial="slideUp" delay={400 + index * 50}>
+              <SlideUp key={index} delay={400 + index * 50}>
                 <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-secondary/50">
                   <div className="w-2 h-2 rounded-full bg-accent" />
                   <div className="flex-1 min-w-0">
@@ -183,15 +183,15 @@ export default function DashboardPage() {
                     {event.level}
                   </span>
                 </div>
-              </Animated>
+              </SlideUp>
             ))}
             {(!data?.recent_events || data.recent_events.length === 0) && (
               <p className="text-secondary-text text-center py-8">No recent activity</p>
             )}
           </div>
         </Card>
-      </Animated>
-    </Animated>
+      </SlideUp>
+    </FadeIn>
   )
 }
 

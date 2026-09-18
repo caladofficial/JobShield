@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs'
-import { Animated } from '@/components/ui/Animated'
+import { FadeIn, SlideUp } from '@/components/ui/Animated'
 import {
   ExternalLink,
   ShieldCheck,
@@ -103,7 +103,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <Animated initial="fade" duration={300}>
+    <FadeIn duration={300}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">

@@ -3,30 +3,21 @@
 import { ReactNode, HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
-interface AnimatedProps extends HTMLAttributes<HTMLDivElement> {
+interface FadeInProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   className?: string
-  initial?: 'fade' | 'slideUp' | 'slideDown' | 'scale'
   delay?: number
   duration?: number
 }
 
-export function Animated({ 
+export function FadeIn({ 
   children, 
   className, 
-  initial = 'fade', 
   delay = 0, 
   duration = 300, 
   style, 
   ...props 
-}: AnimatedProps) {
-  const animationClasses = {
-    fade: 'animate-fade-in',
-    slideUp: 'animate-slide-up',
-    slideDown: 'animate-slide-down',
-    scale: 'animate-scale-in',
-  }
-
+}: FadeInProps) {
   const animationStyle = {
     animationDelay: `${delay}ms`,
     animationDuration: `${duration}ms`,
@@ -34,41 +25,77 @@ export function Animated({
 
   return (
     <div
-      className={animationClasses[initial] ? `${animationClasses[initial]} ${className || ''}` : className}
+      className={`animate-fade-in ${className || ''}`}
       style={{ ...animationStyle, ...style }}
-      {...props}
     >
       {children}
     </div>
   )
 }
 
-export function MotionDiv({ 
+export function SlideUp({ 
   children, 
   className, 
-  initial, 
-  animate, 
-  transition, 
-  onClick 
-}: {
-  children: React.ReactNode
-  className?: string
-  initial?: Record<string, any>
-  animate?: Record<string, any>
-  transition?: Record<string, any>
-  onClick?: () => void
-}) {
-  const hasAnimation = initial || animate
-  const animationClass = hasAnimation ? 'animate-fade-in' : ''
+  delay = 0, 
+  duration = 300, 
+  style, 
+  ...props 
+}: FadeInProps) {
+  const animationStyle = {
+    animationDelay: `${delay}ms`,
+    animationDuration: `${duration}ms`,
+  } as React.CSSProperties
 
   return (
     <div
-      className={cn(animationClass, className)}
-      onClick={onClick}
-      style={{
-        ...(initial?.opacity !== undefined && { opacity: initial.opacity }),
-        ...(animate?.opacity !== undefined && { opacity: animate.opacity }),
-      }}
+      className={`animate-slide-up ${className || ''}`}
+      style={{ ...animationStyle, ...style }}
+    >
+      {children}
+    </div>
+  )
+}
+
+export function SlideDown({ 
+  children, 
+  className, 
+  delay = 0, 
+  duration = 300, 
+  style, 
+  ...props 
+}: FadeInProps) {
+  const animationStyle = {
+    animationDelay: `${delay}ms`,
+    animationDuration: `${duration}ms`,
+  } as React.CSSProperties
+
+  return (
+    <div
+      className={`animate-slide-down ${className || ''}`}
+      style={{ ...animationStyle, ...style }}
+    >
+      {children}
+    </div>
+  )
+}
+
+export function ScaleIn({ 
+  children, 
+  className, 
+  delay = 0, 
+  duration = 300, 
+  style, 
+  ...props 
+}: FadeInProps) {
+  const animationStyle = {
+    animationDelay: `${delay}ms`,
+    animationDuration: `${duration}ms`,
+  } as React.CSSProperties
+
+  return (
+    <div
+      className={`animate-scale-in ${className || ''}`}
+      style={{ ...animationStyle, ...style }}
     >
       {children}
     </div>
