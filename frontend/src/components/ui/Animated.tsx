@@ -1,54 +1,44 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ReactNode, forwardRef, HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
-interface AnimatedProps {
+interface AnimatedProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   className?: string
   initial?: 'fade' | 'slideUp' | 'slideDown' | 'scale'
   delay?: number
   duration?: number
-  ref?: React.Ref<HTMLDivElement>
-  onClick?: () => void
-  style?: React.CSSProperties
 }
 
-export function Animated({ 
-  children, 
-  className, 
-  initial = 'fade', 
-  delay = 0, 
-  duration = 300,
-  ref,
-  onClick,
-  style,
-  ...props
-}: AnimatedProps & React.HTMLAttributes<HTMLDivElement>) {
-  const animationClasses = {
-    fade: 'animate-fade-in',
-    slideUp: 'animate-slide-up',
-    slideDown: 'animate-slide-down',
-    scale: 'animate-scale-in',
+export const Animated = forwardRef<HTMLDivElement, AnimatedProps & React.HTMLAttributes<HTMLDivElement>>(
+  ({ children, className, initial = 'fade', delay = 0, duration = 300, style, ...props }, ref) => {
+    const animationClasses = {
+      fade: 'animate-fade-in',
+      slideUp: 'animate-slide-up',
+      slideDown: 'animate-slide-down',
+      scale: 'animate-scale-in',
+    }
+
+    const animationStyle = {
+      animationDelay: `${delay}ms`,
+      animationDuration: `${duration}ms`,
+    } as React.CSSProperties
+
+    return (
+      <div
+        ref={ref}
+        className={cn(animationClasses[initial], className)}
+        style={{ ...animationStyle, ...style }}
+        {...props}
+      >
+        {children}
+      </div>
+    )
   }
+)
 
-  const animationStyle = {
-    animationDelay: `${delay}ms`,
-    animationDuration: `${duration}ms`,
-  } as React.CSSProperties
-
-  return (
-    <div
-      ref={ref}
-      className={cn(animationClasses[initial], className)}
-      style={{ ...animationStyle, ...style }}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </div>
-  )
-}
+Animated.displayName = 'Animated'
 
 export function MotionDiv({ 
   children, 
@@ -58,7 +48,7 @@ export function MotionDiv({
   transition, 
   onClick 
 }: {
-  children: ReactNode
+  children: React.ReactNode
   className?: string
   initial?: Record<string, any>
   animate?: Record<string, any>
