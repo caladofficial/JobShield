@@ -4,22 +4,22 @@ import { ReactNode, HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
 interface AnimatedProps extends HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children: ReactNode
   className?: string
   initial?: 'fade' | 'slideUp' | 'slideDown' | 'scale'
   delay?: number
   duration?: number
 }
 
-export function Animated({ 
-  children, 
-  className, 
-  initial = 'fade', 
-  delay = 0, 
-  duration = 300, 
-  style, 
-  ...props 
-}: AnimatedProps) {
+export const Animated = ({
+  children,
+  className,
+  initial = 'fade',
+  delay = 0,
+  duration = 300,
+  style,
+  ...props
+}: AnimatedProps) => {
   const animationClasses = {
     fade: 'animate-fade-in',
     slideUp: 'animate-slide-up',
@@ -34,7 +34,7 @@ export function Animated({
 
   return (
     <div
-      className={cn(animationClasses[initial], className)}
+      className={animationClasses[initial] ? `${animationClasses[initial]} ${className || ''}` : className}
       style={{ ...animationStyle, ...style }}
       {...props}
     >
