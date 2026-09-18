@@ -10,6 +10,8 @@ import { Card } from '@/components/ui/Card'
 import { Animated } from '@/components/ui/Animated'
 import { Activity, Mail, Lock, AlertCircle, CheckCircle, Loader2 } from 'lucide-react'
 
+import { Loader2 } from 'lucide-react'
+
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -167,5 +169,3 @@ export default function LoginPage() {
     </div>
   )
 }
-
-import { Loader2 } from 'lucide-react'

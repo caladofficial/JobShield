@@ -7,7 +7,6 @@ import { JobListItem, PaginatedResponse, JobStatus, RiskLevel } from '@/types/da
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
-import { cn } from '@/lib/utils'
 import {
   ShieldCheck,
   AlertTriangle,
