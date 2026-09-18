@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import {
   PieChart,
   Pie,
@@ -10,6 +9,7 @@ import {
   Legend,
 } from 'recharts'
 import { cn } from '@/lib/utils'
+import { Animated } from '@/components/ui/Animated'
 
 interface ChartDataPoint {
   label: string
@@ -35,7 +35,7 @@ export function JobsBySourceChart({ data, className }: JobsBySourceChartProps) {
   const total = data.reduce((sum, d) => sum + d.value, 0)
 
   return (
-    <div className={cn('h-48', className)}>
+    <div className={cn('h-48 relative', className)}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -52,14 +52,9 @@ export function JobsBySourceChart({ data, className }: JobsBySourceChartProps) {
             labelStyle={{ fill: '#F2F2F2', fontSize: 11, fontFamily: 'Inter' }}
           >
             {data.map((entry, index) => (
-              <motion.cell
-                key={`cell-${index}`}
-                initial={{ endAngle: entry.startAngle }}
-                animate={{ endAngle: entry.endAngle }}
-                transition={{ delay: index * 0.1, duration: 0.8 }}
-              >
+              <Animated key={`cell-${index}`} initial="scaleIn" delay={index * 100}>
                 <Cell fill={COLORS[index % COLORS.length]} />
-              </motion.cell>
+              </Animated>
             ))}
           </Pie>
           <Tooltip
@@ -81,18 +76,12 @@ export function JobsBySourceChart({ data, className }: JobsBySourceChartProps) {
           />
         </PieChart>
       </ResponsiveContainer>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.5, type: 'spring' }}
-        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-      >
+      <Animated initial="scaleIn" delay={500} className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="text-center">
           <p className="text-2xl font-bold font-mono text-primary-text">{total.toLocaleString()}</p>
           <p className="text-xs text-secondary-text">Total Jobs</p>
         </div>
-      </motion.div>
+      </Animated>
     </div>
   )
 }
-

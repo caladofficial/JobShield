@@ -1,9 +1,9 @@
 'use client'
 
 import { forwardRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import { Animated } from '@/components/ui/Animated'
 
 interface Column<T> {
   header: string
@@ -103,13 +103,15 @@ export function DataTable<T extends Record<string, any>>({
           </thead>
           <tbody>
             {[...Array(5)].map((_, i) => (
-              <motion.tr key={i} initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} transition={{ delay: i * 0.1 }}>
-                {columns.map((col) => (
-                  <td key={col.header} className={col.className}>
-                    <div className="h-4 bg-surface-secondary rounded animate-pulse" style={{ width: '60%' }} />
-                  </td>
-                ))}
-              </motion.tr>
+              <Animated key={i} initial="fade" delay={i * 100}>
+                <tr>
+                  {columns.map((col) => (
+                    <td key={col.header} className={col.className}>
+                      <div className="h-4 bg-surface-secondary rounded animate-pulse" style={{ width: '60%' }} />
+                    </td>
+                  ))}
+                </tr>
+              </Animated>
             ))}
           </tbody>
         </table>
@@ -138,28 +140,20 @@ export function DataTable<T extends Record<string, any>>({
           </tr>
         </thead>
         <tbody>
-          <AnimatePresence mode="popLayout">
-            {data.map((row, rowIndex) => (
-              <motion.tr
-                key={getRowKey(row)}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ delay: rowIndex * 0.03 }}
-                className="hover:bg-surface-secondary/50 transition-colors"
-              >
+          {data.map((row, rowIndex) => (
+            <Animated key={getRowKey(row)} initial="fade" delay={rowIndex * 30}>
+              <tr className="hover:bg-surface-secondary/50 transition-colors">
                 {columns.map((col) => (
                   <td key={col.header} className={cn(col.className)}>
                     {col.cell ? col.cell(row) : row[col.accessor as keyof T]}
                   </td>
                 ))}
-              </motion.tr>
-            ))}
-          </AnimatePresence>
+              </tr>
+            </Animated>
+          ))}
         </tbody>
       </table>
       {pagination && <Pagination {...pagination} />}
     </div>
   )
 }
-

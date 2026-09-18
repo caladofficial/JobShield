@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import {
   BarChart,
   Bar,
@@ -11,6 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { cn } from '@/lib/utils'
+import { Animated } from '@/components/ui/Animated'
 
 interface ChartDataPoint {
   label: string
@@ -62,12 +62,9 @@ export function VerificationActivityChart({ data, className }: VerificationActiv
             maxBarWidth={40}
           >
             {data.map((entry, index) => (
-              <motion.rect
-                key={index}
-                initial={{ height: 0, y: maxValue * 1.2 }}
-                animate={{ height: (entry.value / maxValue) * 100 * 3.5, y: (1 - entry.value / (maxValue * 1.2)) * 100 * 3.5 }}
-                transition={{ delay: index * 0.1, type: 'spring', stiffness: 100, damping: 15 }}
-              />
+              <Animated key={index} initial="scaleIn" delay={index * 100}>
+                <Cell fill="#A8FF60" />
+              </Animated>
             ))}
           </Bar>
         </BarChart>
@@ -75,4 +72,3 @@ export function VerificationActivityChart({ data, className }: VerificationActiv
     </div>
   )
 }
-
