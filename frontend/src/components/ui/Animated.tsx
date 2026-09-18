@@ -11,15 +11,15 @@ interface AnimatedProps extends HTMLAttributes<HTMLDivElement> {
   duration?: number
 }
 
-export function Animated({ 
-  children, 
-  className, 
-  initial = 'fade', 
-  delay = 0, 
-  duration = 300, 
-  style, 
-  ...props 
-}: AnimatedProps) {
+export const Animated = ({
+  children,
+  className,
+  initial = 'fade',
+  delay = 0,
+  duration = 300,
+  style,
+  ...props
+}: AnimatedProps) => {
   const animationClasses = {
     fade: 'animate-fade-in',
     slideUp: 'animate-slide-up',
