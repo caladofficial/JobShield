@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { cn, formatDate } from '@/lib/utils'
 import { outreachApi } from '@/lib/api'
 import { EmailCampaignResponse, EmailRecipientResponse, PaginatedResponse } from '@/types/outreach'
@@ -442,43 +441,40 @@ export default function OutreachPage() {
         </div>
       </Modal>
 
-      <AnimatePresence>
-        {viewingCampaign && (
-          <Modal open onClose={() => setViewingCampaign(null)} title={`Recipients: ${viewingCampaign.name}`} size="xl">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="font-medium text-primary-text">Recipients ({recipientsTotal})</h3>
-                <div className="flex items-center gap-2">
-                  <Button variant="secondary" size="sm" onClick={() => handleSend(viewingCampaign!.id)} disabled={viewingCampaign?.status !== 'draft' && viewingCampaign?.status !== 'scheduled' && viewingCampaign?.status !== 'paused'}>
-                    <Send className="w-3.5 h-3.5 mr-1" />
-                    Send Campaign
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleTestSend(viewingCampaign!.id)}>
-                    <Mail className="w-3.5 h-3.5 mr-1" />
-                    Test
-                  </Button>
-                </div>
+      {viewingCampaign && (
+        <Modal open onClose={() => setViewingCampaign(null)} title={`Recipients: ${viewingCampaign.name}`} size="xl">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-primary-text">Recipients ({recipientsTotal})</h3>
+              <div className="flex items-center gap-2">
+                <Button variant="secondary" size="sm" onClick={() => handleSend(viewingCampaign!.id)} disabled={viewingCampaign?.status !== 'draft' && viewingCampaign?.status !== 'scheduled' && viewingCampaign?.status !== 'paused'}>
+                  <Send className="w-3.5 h-3.5 mr-1" />
+                  Send Campaign
+                </Button>
+                <Button variant="ghost" size="sm" onClick={() => handleTestSend(viewingCampaign!.id)}>
+                  <Mail className="w-3.5 h-3.5 mr-1" />
+                  Test
+                </Button>
               </div>
-              <DataTable
-                columns={recipientColumns}
-                data={recipients}
-                loading={recipientsLoading}
-                emptyMessage="No recipients in this campaign"
-                pagination={{
-                  page: recipientsPage,
-                  pageSize: 50,
-                  total: recipientsTotal,
-                  onPageChange: setRecipientsPage,
-                  onPageSizeChange: () => {},
-                }}
-              />
             </div>
-          </Modal>
-        )}
-      </AnimatePresence>
+            <DataTable
+              columns={recipientColumns}
+              data={recipients}
+              loading={recipientsLoading}
+              emptyMessage="No recipients in this campaign"
+              pagination={{
+                page: recipientsPage,
+                pageSize: 50,
+                total: recipientsTotal,
+                onPageChange: setRecipientsPage,
+                onPageSizeChange: () => {},
+              }}
+            />
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }
 
 import { Users } from 'lucide-react'
-

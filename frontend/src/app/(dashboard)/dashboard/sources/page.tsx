@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { cn, formatDate } from '@/lib/utils'
 import { sourcesApi } from '@/lib/api'
 import { SourceResponse, SourceConnectionResponse, SourceStatus } from '@/types/dashboard'
@@ -10,6 +9,7 @@ import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
+import { Animated } from '@/components/ui/Animated'
 import {
   Database,
   Plug,
@@ -26,6 +26,7 @@ import {
   ExternalLink,
   Plus,
 } from 'lucide-react'
+import { Building2, Globe, Rss, Briefcase, Linkedin } from 'lucide-react'
 
 const STATUS_ICONS: Record<SourceStatus, React.ReactNode> = {
   connected: <CheckCircle className="w-5 h-5 text-green-400" />,
@@ -64,8 +65,6 @@ const SOURCE_ICONS: Record<string, React.ReactNode> = {
   linkedin: <Linkedin className="w-5 h-5" />,
   naukri: <Briefcase className="w-5 h-5" />,
 }
-
-import { Building2, Globe, Rss, Briefcase, Linkedin } from 'lucide-react'
 
 export default function SourcesPage() {
   const [sources, setSources] = useState<SourceResponse[]>([])
@@ -182,19 +181,13 @@ export default function SourcesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {sources.map((source) => {
+          {sources.map((source, index) => {
             const connection = connections.find(c => c.source_id === source.id)
             const status = connection?.status || 'disconnected'
             const Icon = SOURCE_ICONS[source.name] || <Database className="w-5 h-5" />
 
             return (
-              <motion.div
-                key={source.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="card relative"
-              >
+              <Animated key={source.id} initial="slideUp" delay={index * 50} className="card relative">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-xl bg-surface flex items-center justify-center">
@@ -286,7 +279,7 @@ export default function SourcesPage() {
                     <Plug className="w-4 h-4 ml-2" />
                   </Button>
                 )}
-              </motion.div>
+              </Animated>
             )
           })}
         </div>
@@ -377,4 +370,3 @@ export default function SourcesPage() {
     </div>
   )
 }
-

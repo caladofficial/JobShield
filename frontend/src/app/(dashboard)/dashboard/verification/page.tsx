@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { cn, formatDate, getRiskBadgeClass, getStatusBadgeClass, getStatusLabel } from '@/lib/utils'
 import { jobsApi } from '@/lib/api'
 import { JobListItem, PaginatedResponse, JobStatus, RiskLevel } from '@/types/dashboard'
 import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
+import { cn } from '@/lib/utils'
 import {
   ShieldCheck,
   AlertTriangle,
@@ -160,32 +160,28 @@ export default function VerificationPage() {
           </Button>
         </div>
 
-        {showFilters && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="mt-4 pt-4 border-t border-border"
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <select
-                value={filters.status}
-                onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-                className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
-              >
-                {STATUS_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-              </select>
-              <select
-                value={filters.risk_level}
-                onChange={(e) => setFilters(prev => ({ ...prev, risk_level: e.target.value }))}
-                className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
-              >
-                {RISK_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-              </select>
+        <div className={cn('transition-all duration-200 overflow-hidden', showFilters ? 'h-auto opacity-100' : 'h-0 opacity-0')}>
+          {showFilters && (
+            <div className="mt-4 pt-4 border-t border-border">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <select
+                  value={filters.status}
+                  onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                  className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
+                >
+                  {STATUS_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                </select>
+                <select
+                  value={filters.risk_level}
+                  onChange={(e) => setFilters(prev => ({ ...prev, risk_level: e.target.value }))}
+                  className="px-4 py-2.5 rounded-xl bg-surface-secondary border border-border text-primary-text focus:outline-none focus:ring-2 focus:ring-accent"
+                >
+                  {RISK_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                </select>
+              </div>
             </div>
-          </motion.div>
-        )}
+          )}
+        </div>
       </div>
 
       <DataTable
@@ -204,4 +200,3 @@ export default function VerificationPage() {
     </div>
   )
 }
-

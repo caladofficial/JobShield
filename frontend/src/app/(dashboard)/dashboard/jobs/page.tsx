@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { cn, formatDate, formatCurrency, getRiskBadgeClass, getStatusBadgeClass, getStatusLabel } from '@/lib/utils'
 import { jobsApi, sourcesApi } from '@/lib/api'
 import { JobListItem, PaginatedResponse, JobStatus, RiskLevel, SourceResponse } from '@/types/dashboard'
@@ -11,6 +10,8 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { Modal } from '@/components/ui/Modal'
+import { Animated } from '@/components/ui/Animated'
 import {
   Search,
   Filter,
@@ -144,14 +145,9 @@ export default function JobsPage() {
       header: 'Job Title',
       accessor: 'title',
       cell: (job: JobListItem) => (
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="font-medium text-primary-text hover:text-accent cursor-pointer"
-          onClick={() => window.location.href = `/dashboard/jobs/${job.id}`}
-        >
+        <a href={`/dashboard/jobs/${job.id}`} className="font-medium text-primary-text hover:text-accent">
           {job.title}
-        </motion.div>
+        </a>
       ),
     },
     {
@@ -301,15 +297,9 @@ export default function JobsPage() {
           </div>
         </div>
 
-        <AnimatePresence>
+        <div className={cn('transition-all duration-200 overflow-hidden', showFilters ? 'h-auto opacity-100' : 'h-0 opacity-0')}>
           {showFilters && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="p-4 border-t border-border bg-surface-secondary/30"
-            >
+            <div className="p-4 border-t border-border bg-surface-secondary/30">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 <Select
                   value={filters.status}
@@ -365,9 +355,9 @@ export default function JobsPage() {
                   <span className="text-sm text-secondary-text">Has Phone</span>
                 </label>
               </div>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
+        </div>
       </Card>
 
       <Card>
@@ -386,72 +376,46 @@ export default function JobsPage() {
         />
       </Card>
 
-      <AnimatePresence>
-        {scanModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-            onClick={() => setScanModalOpen(false)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-surface border border-border rounded-2xl p-6 w-full max-w-md"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-primary-text">Scan Job URL</h2>
-                <button onClick={() => setScanModalOpen(false)} className="p-1 rounded-lg text-secondary-text hover:text-primary-text hover:bg-surface-secondary">
-                  <ChevronDown className="w-5 h-5" />
-                </button>
-              </div>
+      <Modal open={scanModalOpen} onClose={() => setScanModalOpen(false)} title="Scan Job URL" size="md">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-secondary-text mb-1">Job URL</label>
+            <Input
+              value={scanUrl}
+              onChange={(e) => setScanUrl(e.target.value)}
+              placeholder="https://example.com/job/123"
+              disabled={scanning}
+            />
+          </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-secondary-text mb-1">Job URL</label>
-                  <Input
-                    value={scanUrl}
-                    onChange={(e) => setScanUrl(e.target.value)}
-                    placeholder="https://example.com/job/123"
-                    disabled={scanning}
-                  />
-                </div>
+          <div>
+            <label className="block text-sm font-medium text-secondary-text mb-1">Source (Optional)</label>
+            <Select
+              value={scanSourceId}
+              onValueChange={setScanSourceId}
+              options={[{ value: '', label: 'Auto-detect' }, ...sources.map(s => ({ value: String(s.id), label: s.display_name }))]}
+              placeholder="Select source"
+              disabled={scanning}
+            />
+          </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-secondary-text mb-1">Source (Optional)</label>
-                  <Select
-                    value={scanSourceId}
-                    onValueChange={setScanSourceId}
-                    options={[{ value: '', label: 'Auto-detect' }, ...sources.map(s => ({ value: String(s.id), label: s.display_name }))]}
-                    placeholder="Select source"
-                    disabled={scanning}
-                  />
-                </div>
-
-                <div className="flex gap-2 pt-2">
-                  <Button variant="secondary" onClick={() => setScanModalOpen(false)} className="flex-1" disabled={scanning}>
-                    Cancel
-                  </Button>
-                  <Button onClick={handleScan} className="flex-1" disabled={scanning || !scanUrl.trim()}>
-                    {scanning ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                        Scanning...
-                      </>
-                    ) : (
-                      'Scan Job'
-                    )}
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <div className="flex gap-2 pt-2">
+            <Button variant="secondary" onClick={() => setScanModalOpen(false)} className="flex-1" disabled={scanning}>
+              Cancel
+            </Button>
+            <Button onClick={handleScan} className="flex-1" disabled={scanning || !scanUrl.trim()}>
+              {scanning ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Scanning...
+                </>
+              ) : (
+                'Scan Job'
+              )}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
-

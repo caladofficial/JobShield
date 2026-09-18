@@ -1,9 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard,
   Briefcase,
@@ -45,12 +44,22 @@ export default function DashboardLayout({
 }) {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
   const pathname = usePathname()
   const { user, signOut } = useAuth()
+
+  // Handle sidebar transition with CSS
+  useEffect(() => {
+    const sidebar = document.querySelector('[data-sidebar]')
+    if (sidebar) {
+      sidebar.style.transition = 'width 0.3s ease, transform 0.3s ease'
+    }
+  }, [collapsed, mobileOpen])
 
   return (
     <div className="min-h-screen bg-background flex">
       <aside
+        data-sidebar
         className={cn(
           'fixed left-0 top-0 z-40 h-screen bg-surface border-r border-border transition-all duration-300 flex flex-col',
           collapsed ? 'w-20' : 'w-72',
@@ -96,37 +105,25 @@ export default function DashboardLayout({
         </nav>
 
         <div className="p-4 border-t border-border">
-          <AnimatePresence mode="wait">
-            {!collapsed && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="space-y-2">
-                  <button className="sidebar-link w-full justify-start">
-                    <Moon className="w-5 h-5" />
-                    <span>Appearance</span>
-                  </button>
-                  <hr className="border-border" />
-                  <button className="sidebar-link w-full justify-start text-red-400 hover:bg-red-600/10" onClick={() => signOut()}>
-                    <LogOut className="w-5 h-5" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div className={cn('transition-all duration-200 overflow-hidden', collapsed ? 'h-0 opacity-0' : 'h-auto opacity-100')}>
+            <div className="space-y-2">
+              <button className="sidebar-link w-full justify-start">
+                <Moon className="w-5 h-5" />
+                <span>Appearance</span>
+              </button>
+              <hr className="border-border" />
+              <button className="sidebar-link w-full justify-start text-red-400 hover:bg-red-600/10" onClick={() => signOut()}>
+                <LogOut className="w-5 h-5" />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
         </div>
       </aside>
 
       {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-30 bg-background/50 lg:hidden"
+        <div
+          className="fixed inset-0 z-30 bg-background/50 lg:hidden transition-opacity duration-300"
           onClick={() => setMobileOpen(false)}
         />
       )}
@@ -166,4 +163,3 @@ export default function DashboardLayout({
     </div>
   )
 }
-
