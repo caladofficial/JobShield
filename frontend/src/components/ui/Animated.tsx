@@ -39,5 +39,3 @@ export const Animated = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivE
 )
 
 Animated.displayName = 'Animated'
-
-export { Animated }
