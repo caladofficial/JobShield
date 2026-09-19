@@ -11,7 +11,7 @@ import { Select } from '@/components/ui/Select'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Modal } from '@/components/ui/Modal'
-import { Animated } from '@/components/ui/Animated'
+
 import {
   Search,
   Filter,

@@ -3,7 +3,6 @@
 import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 import { X } from 'lucide-react'
-import { Animated } from './Animated'
 
 interface ModalProps {
   open: boolean
@@ -23,33 +22,41 @@ const sizeClasses = {
 
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(
   ({ open, onClose, title, children, size = 'md', className }, ref) => {
+    if (!open) return null
+
     return (
-      <>
-        {open && (
-          <Animated ref={ref} initial="fade" duration={200} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <Animated initial="scaleIn" duration={300} className={cn(
-              'bg-surface border border-border rounded-2xl shadow-elevated w-full',
-              sizeClasses[size],
-              className
-            )} onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-center justify-between p-4 border-b border-border">
-                <h2 id="modal-title" className="text-lg font-bold text-primary-text">
-                  {title}
-                </h2>
-                <button
-                  onClick={onClose}
-                  className="p-1.5 rounded-lg text-secondary-text hover:text-primary-text hover:bg-surface-secondary transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="p-4 max-h-[70vh] overflow-y-auto">
-                {children}
-              </div>
-            </Animated>
-          </Animated>
-        )}
-      </>
+      <div
+        ref={ref}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+        onClick={onClose}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div
+          className={cn(
+            'bg-surface border border-border rounded-2xl shadow-elevated w-full',
+            sizeClasses[size],
+            className
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between p-4 border-b border-border">
+            <h2 id="modal-title" className="text-lg font-bold text-primary-text">
+              {title}
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg text-secondary-text hover:text-primary-text hover:bg-surface-secondary transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="p-4 max-h-[70vh] overflow-y-auto">
+            {children}
+          </div>
+        </div>
+      </div>
     )
   }
 )

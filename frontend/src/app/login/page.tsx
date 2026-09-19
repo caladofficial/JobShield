@@ -7,7 +7,6 @@ import { signIn } from 'next-auth/react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card } from '@/components/ui/Card'
-import { Animated } from '@/components/ui/Animated'
 import { Activity, Mail, Lock, AlertCircle, CheckCircle, Loader2 } from 'lucide-react'
 
 export default function LoginPage() {
@@ -61,7 +60,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <Animated initial="slideUp" delay={100} duration={400} className="w-full max-w-md">
+      <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
@@ -124,10 +123,10 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <Animated initial="slideUp" className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 {error}
-              </Animated>
+              </div>
             )}
 
             <Button type="submit" className="w-full" disabled={loading} size="lg">
@@ -163,7 +162,9 @@ export default function LoginPage() {
         <div className="mt-6 text-center text-sm text-secondary-text">
           <p>Demo Mode: Use any email/password to sign in</p>
         </div>
-      </Animated>
+      </div>
     </div>
   )
 }
+
+import { Loader2 } from 'lucide-react'

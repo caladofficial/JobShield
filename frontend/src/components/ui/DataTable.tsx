@@ -3,7 +3,6 @@
 import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
-import { Animated } from '@/components/ui/Animated'
 
 interface Column<T> {
   header: string
@@ -103,15 +102,13 @@ export function DataTable<T extends Record<string, any>>({
           </thead>
           <tbody>
             {[...Array(5)].map((_, i) => (
-              <Animated key={i} initial="fade" delay={i * 100}>
-                <tr>
-                  {columns.map((col) => (
-                    <td key={col.header} className={col.className}>
-                      <div className="h-4 bg-surface-secondary rounded animate-pulse" style={{ width: '60%' }} />
-                    </td>
-                  ))}
-                </tr>
-              </Animated>
+              <tr key={i} className="animate-pulse">
+                {columns.map((col) => (
+                  <td key={col.header} className={col.className}>
+                    <div className="h-4 bg-surface-secondary rounded animate-pulse" style={{ width: '60%' }} />
+                  </td>
+                ))}
+              </tr>
             ))}
           </tbody>
         </table>
@@ -141,15 +138,13 @@ export function DataTable<T extends Record<string, any>>({
         </thead>
         <tbody>
           {data.map((row, rowIndex) => (
-            <Animated key={getRowKey(row)} initial="fade" delay={rowIndex * 30}>
-              <tr className="hover:bg-surface-secondary/50 transition-colors">
-                {columns.map((col) => (
-                  <td key={col.header} className={cn(col.className)}>
-                    {col.cell ? col.cell(row) : row[col.accessor as keyof T]}
-                  </td>
-                ))}
-              </tr>
-            </Animated>
+            <tr key={getRowKey(row)} className="hover:bg-surface-secondary/50 transition-colors">
+              {columns.map((col) => (
+                <td key={col.header} className={cn(col.className)}>
+                  {col.cell ? col.cell(row) : row[col.accessor as keyof T]}
+                </td>
+              ))}
+            </tr>
           ))}
         </tbody>
       </table>
