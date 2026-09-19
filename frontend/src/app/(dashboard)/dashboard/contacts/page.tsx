@@ -11,7 +11,6 @@ import { Card } from '@/components/ui/Card'
 import FadeIn from '@/components/ui/FadeIn'
 import SlideUp from '@/components/ui/SlideUp'
 import SlideDown from '@/components/ui/SlideDown'
-import SlideDown from '@/components/ui/SlideDown'
 import {
   Mail,
   Phone,
