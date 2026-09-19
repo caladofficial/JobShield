@@ -303,31 +303,31 @@ export default function JobsPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 <Select
                   value={filters.status}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}
+                  onChange={(value) => setFilters(prev => ({ ...prev, status: value }))}
                   options={STATUS_OPTIONS}
                   placeholder="Status"
                 />
                 <Select
                   value={filters.risk_level}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, risk_level: value }))}
+                  onChange={(value) => setFilters(prev => ({ ...prev, risk_level: value }))}
                   options={RISK_OPTIONS}
                   placeholder="Risk Level"
                 />
                 <Select
                   value={filters.source_id}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, source_id: value }))}
+                  onChange={(value) => setFilters(prev => ({ ...prev, source_id: value }))}
                   options={[{ value: '', label: 'All Sources' }, ...sources.map(s => ({ value: String(s.id), label: s.display_name }))]}
                   placeholder="Source"
                 />
                 <Select
                   value={filters.sort_by}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, sort_by: value }))}
+                  onChange={(value) => setFilters(prev => ({ ...prev, sort_by: value }))}
                   options={SORT_OPTIONS}
                   placeholder="Sort By"
                 />
                 <Select
                   value={filters.sort_order}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, sort_order: value }))}
+                  onChange={(value) => setFilters(prev => ({ ...prev, sort_order: value }))}
                   options={[
                     { value: 'desc', label: 'Descending' },
                     { value: 'asc', label: 'Ascending' },
