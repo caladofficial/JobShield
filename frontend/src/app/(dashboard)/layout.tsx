@@ -50,7 +50,7 @@ export default function DashboardLayout({
 
   // Handle sidebar transition with CSS
   useEffect(() => {
-    const sidebar = document.querySelector('[data-sidebar]')
+    const sidebar = document.querySelector('[data-sidebar]') as HTMLElement | null
     if (sidebar) {
       sidebar.style.transition = 'width 0.3s ease, transform 0.3s ease'
     }
