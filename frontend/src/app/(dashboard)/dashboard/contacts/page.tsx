@@ -186,7 +186,7 @@ export default function ContactsPage() {
   ]
 
   return (
-    <div className="animate-fade-in" style={{ animationDuration: '300ms' }}>
+    <div>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-primary-text">Contacts</h1>
@@ -199,24 +199,12 @@ export default function ContactsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-        <div className="animate-slide-up" style={{ animationDelay: '0ms' }}>
-          <StatCard label="Total Contacts" value={stats.total_contacts} icon={<Mail />} color="text-blue-400" bg="bg-blue-500/10" />
-        </div>
-        <div className="animate-slide-up" style={{ animationDelay: '50ms' }}>
-          <StatCard label="Corporate Emails" value={stats.corporate_emails} icon={<Building2 />} color="text-green-400" bg="bg-green-500/10" />
-        </div>
-        <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
-          <StatCard label="Free Mail" value={stats.free_mail_addresses} icon={<Mail />} color="text-yellow-400" bg="bg-yellow-500/10" />
-        </div>
-        <div className="animate-slide-up" style={{ animationDelay: '150ms' }}>
-          <StatCard label="Valid Phones" value={stats.valid_phones} icon={<Phone />} color="text-orange-400" bg="bg-orange-500/10" />
-        </div>
-        <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
-          <StatCard label="Invalid" value={stats.invalid_contacts} icon={<XCircle />} color="text-red-400" bg="bg-red-500/10" />
-        </div>
-        <div className="animate-slide-up" style={{ animationDelay: '250ms' }}>
-          <StatCard label="Unverified" value={stats.unverified_contacts} icon={<HelpCircle />} color="text-gray-400" bg="bg-gray-500/10" />
-        </div>
+        <StatCard label="Total Contacts" value={stats.total_contacts} icon={<Mail />} color="text-blue-400" bg="bg-blue-500/10" />
+        <StatCard label="Corporate Emails" value={stats.corporate_emails} icon={<Building2 />} color="text-green-400" bg="bg-green-500/10" />
+        <StatCard label="Free Mail" value={stats.free_mail_addresses} icon={<Mail />} color="text-yellow-400" bg="bg-yellow-500/10" />
+        <StatCard label="Valid Phones" value={stats.valid_phones} icon={<Phone />} color="text-orange-400" bg="bg-orange-500/10" />
+        <StatCard label="Invalid" value={stats.invalid_contacts} icon={<XCircle />} color="text-red-400" bg="bg-red-500/10" />
+        <StatCard label="Unverified" value={stats.unverified_contacts} icon={<HelpCircle />} color="text-gray-400" bg="bg-gray-500/10" />
       </div>
 
       <Card className="p-4">
@@ -267,21 +255,19 @@ export default function ContactsPage() {
         </div>
       </Card>
 
-      <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
-        <DataTable
-          columns={columns}
-          data={contacts}
-          loading={loading}
-          emptyMessage="No contacts found"
-          pagination={{
-            page,
-            pageSize,
-            total,
-            onPageChange: setPage,
-            onPageSizeChange: setPageSize,
-          }}
-        />
-      </div>
+      <DataTable
+        columns={columns}
+        data={contacts}
+        loading={loading}
+        emptyMessage="No contacts found"
+        pagination={{
+          page,
+          pageSize,
+          total,
+          onPageChange: setPage,
+          onPageSizeChange: setPageSize,
+        }}
+      />
     </div>
   )
 }

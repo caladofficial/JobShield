@@ -62,7 +62,7 @@ export default function DashboardPage() {
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((_, i) => (
-            <div key={i} className="animate-slide-up" style={{ animationDelay: `${i * 50}ms` }}>
+            <div key={i}>
               <StatCardSkeleton />
             </div>
           ))}
@@ -95,7 +95,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="animate-fade-in" style={{ animationDuration: '300ms' }}>
+    <div>
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-primary-text">Dashboard</h1>
@@ -109,7 +109,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {stats.map((stat, index) => (
-          <div key={stat.label} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
+          <div key={stat.label}>
             <StatCard
               label={stat.label}
               value={stat.value}
@@ -122,74 +122,59 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
-          <Card>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium text-primary-text">Verification Activity</h3>
-              <TrendingUp className="w-4 h-4 text-secondary-text" />
-            </div>
-            <VerificationActivityChart data={data?.verification_activity.data ?? []} />
-          </Card>
-        </div>
+        <Card>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-medium text-primary-text">Verification Activity</h3>
+            <TrendingUp className="w-4 h-4 text-secondary-text" />
+          </div>
+          <VerificationActivityChart data={data?.verification_activity.data ?? []} />
+        </Card>
 
-        <div className="animate-slide-up" style={{ animationDelay: '150ms' }}>
-          <Card>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium text-primary-text">Jobs by Source</h3>
-              <Database className="w-4 h-4 text-secondary-text" />
-            </div>
-            <JobsBySourceChart data={data?.jobs_by_source.data ?? []} />
-          </Card>
-        </div>
+        <Card>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-medium text-primary-text">Jobs by Source</h3>
+            <Database className="w-4 h-4 text-secondary-text" />
+          </div>
+          <JobsBySourceChart data={data?.jobs_by_source.data ?? []} />
+        </Card>
 
-        <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
-          <Card>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium text-primary-text">Risk Distribution</h3>
-              <AlertTriangle className="w-4 h-4 text-secondary-text" />
-            </div>
-            <RiskDistributionChart data={data?.risk_distribution.data ?? []} />
-          </Card>
-        </div>
+        <Card>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-medium text-primary-text">Risk Distribution</h3>
+            <AlertTriangle className="w-4 h-4 text-secondary-text" />
+          </div>
+          <RiskDistributionChart data={data?.risk_distribution.data ?? []} />
+        </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div className="animate-slide-up" style={{ animationDelay: '250ms' }}>
-          <RecentJobsTable jobs={data?.recent_jobs ?? []} />
-        </div>
-
-        <div className="animate-slide-up" style={{ animationDelay: '300ms' }}>
-          <SourceHealthCards sources={data?.source_health ?? []} />
-        </div>
+        <RecentJobsTable jobs={data?.recent_jobs ?? []} />
+        <SourceHealthCards sources={data?.source_health ?? []} />
       </div>
 
-      <div className="animate-slide-up" style={{ animationDelay: '350ms' }}>
-        <Card>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium text-primary-text">Recent Activity</h3>
-            <Activity className="w-4 h-4 text-secondary-text" />
-          </div>
-          <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin">
-            {data?.recent_events?.map((event, index) => (
-              <div key={index} className="animate-slide-up" style={{ animationDelay: `${400 + index * 50}ms` }}>
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-secondary/50">
-                  <div className="w-2 h-2 rounded-full bg-accent" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-primary-text truncate">{event.message}</p>
-                    <p className="text-xs text-secondary-text">{new Date(event.created_at).toLocaleString()}</p>
-                  </div>
-                  <span className={cn('badge px-2 py-0.5', event.level === 'error' && 'bg-red-500/20 text-red-400', event.level === 'warning' && 'bg-yellow-500/20 text-yellow-400', event.level === 'info' && 'bg-blue-500/20 text-blue-400')}>
-                    {event.level}
-                  </span>
-                </div>
+      <Card>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-medium text-primary-text">Recent Activity</h3>
+          <Activity className="w-4 h-4 text-secondary-text" />
+        </div>
+        <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin">
+          {data?.recent_events?.map((event, index) => (
+            <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-surface-secondary/50">
+              <div className="w-2 h-2 rounded-full bg-accent" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-primary-text truncate">{event.message}</p>
+                <p className="text-xs text-secondary-text">{new Date(event.created_at).toLocaleString()}</p>
               </div>
-            ))}
-            {(!data?.recent_events || data.recent_events.length === 0) && (
-              <p className="text-secondary-text text-center py-8">No recent activity</p>
-            )}
-          </div>
-        </Card>
-      </div>
+              <span className={cn('badge px-2 py-0.5', event.level === 'error' && 'bg-red-500/20 text-red-400', event.level === 'warning' && 'bg-yellow-500/20 text-yellow-400', event.level === 'info' && 'bg-blue-500/20 text-blue-400')}>
+                {event.level}
+              </span>
+            </div>
+          ))}
+          {(!data?.recent_events || data.recent_events.length === 0) && (
+            <p className="text-secondary-text text-center py-8">No recent activity</p>
+          )}
+        </div>
+      </Card>
     </div>
   )
 }

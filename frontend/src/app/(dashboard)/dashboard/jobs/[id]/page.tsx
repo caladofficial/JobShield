@@ -102,7 +102,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="animate-fade-in" style={{ animationDuration: '300ms' }}>
+    <div>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -198,31 +198,29 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   {job.contacts && job.contacts.length > 0 ? (
                     <div className="space-y-3">
                       {job.contacts.map((contact: ContactInfo, index) => (
-                        <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
-                          <div className="flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50">
-                            <div className="flex items-center gap-3">
-                              {contact.type === 'email' && <Mail className="w-5 h-5 text-green-400" />}
-                              {contact.type === 'phone' && <Phone className="w-5 h-5 text-blue-400" />}
-                              {contact.type === 'website' && <Globe className="w-5 h-5 text-purple-400" />}
-                              {contact.type === 'application_url' && <LinkIcon className="w-5 h-5 text-orange-400" />}
-                              <div>
-                                <p className="font-medium text-primary-text">{contact.normalized_value}</p>
-                                <p className="text-xs text-secondary-text capitalize">{contact.type.replace('_', ' ')}</p>
-                              </div>
+                        <div key={index} className="flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50">
+                          <div className="flex items-center gap-3">
+                            {contact.type === 'email' && <Mail className="w-5 h-5 text-green-400" />}
+                            {contact.type === 'phone' && <Phone className="w-5 h-5 text-blue-400" />}
+                            {contact.type === 'website' && <Globe className="w-5 h-5 text-purple-400" />}
+                            {contact.type === 'application_url' && <LinkIcon className="w-5 h-5 text-orange-400" />}
+                            <div>
+                              <p className="font-medium text-primary-text">{contact.normalized_value}</p>
+                              <p className="text-xs text-secondary-text capitalize">{contact.type.replace('_', ' ')}</p>
                             </div>
-                            <div className="flex items-center gap-2">
-                              {contact.is_valid ? (
-                                <Check className="w-4 h-4 text-green-400" />
-                              ) : (
-                                <X className="w-4 h-4 text-red-400" />
-                              )}
-                              <Badge variant={contact.is_corporate ? 'success' : 'outline'} className="text-xs">
-                                {contact.is_corporate ? 'Corporate' : 'Free Mail'}
-                              </Badge>
-                              <Badge variant="outline" className="text-xs">
-                                {Math.round(contact.confidence * 100)}%
-                              </Badge>
-                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {contact.is_valid ? (
+                              <Check className="w-4 h-4 text-green-400" />
+                            ) : (
+                              <X className="w-4 h-4 text-red-400" />
+                            )}
+                            <Badge variant={contact.is_corporate ? 'success' : 'outline'} className="text-xs">
+                              {contact.is_corporate ? 'Corporate' : 'Free Mail'}
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              {Math.round(contact.confidence * 100)}%
+                            </Badge>
                           </div>
                         </div>
                       ))}
@@ -254,7 +252,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                         const signals = verification[`${stage.key}_signals`] as Record<string, any>
 
                         return (
-                          <div key={stage.key} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
+                          <div key={stage.key}>
                             <button
                               onClick={() => toggleSection(stage.key)}
                               className="w-full flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50 hover:border-border transition-colors"
@@ -278,16 +276,18 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                                 <ChevronDown className={cn('w-4 h-4 text-secondary-text transition-transform', expandedSections[stage.key] && 'rotate-180')} />
                               </div>
                             </button>
-                            <div className={cn('mt-2 ml-14 space-y-2', expandedSections[stage.key] ? 'animate-slide-down' : 'hidden')}>
-                              {Object.entries(signals).map(([key, value]) => (
-                                <div key={key} className="flex items-center justify-between text-sm">
-                                  <span className="text-secondary-text">{key.replace(/_/g, ' ')}</span>
-                                  <span className={value ? 'text-green-400' : 'text-red-400'}>
-                                    {value ? '✓ Passed' : '✗ Failed'}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
+                            {expandedSections[stage.key] && (
+                              <div className="mt-2 ml-14 space-y-2">
+                                {Object.entries(signals).map(([key, value]) => (
+                                  <div key={key} className="flex items-center justify-between text-sm">
+                                    <span className="text-secondary-text">{key.replace(/_/g, ' ')}</span>
+                                    <span className={value ? 'text-green-400' : 'text-red-400'}>
+                                      {value ? '✓ Passed' : '✗ Failed'}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         )
                       })}
@@ -361,24 +361,22 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   {riskEvents.length > 0 ? (
                     <div className="space-y-3">
                       {riskEvents.map((event, index) => (
-                        <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
-                          <div className="p-3 rounded-xl bg-surface-secondary/50 border border-border/50">
-                            <div className="flex items-start gap-3">
-                              <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0', event.severity === 'high' && 'bg-red-500/20', event.severity === 'medium' && 'bg-yellow-500/20', event.severity === 'low' && 'bg-green-500/20')}>
-                                {event.severity === 'high' && <AlertTriangle className="w-4 h-4 text-red-400" />}
-                                {event.severity === 'medium' && <AlertTriangle className="w-4 h-4 text-yellow-400" />}
-                                {event.severity === 'low' && <ShieldCheck className="w-4 h-4 text-green-400" />}
-                              </div>
-                              <div className="flex-1">
-                                <p className="font-medium text-primary-text">{event.signal.replace(/_/g, ' ')}</p>
-                                <p className="text-sm text-secondary-text mt-1">{event.description}</p>
-                                <Badge variant={event.severity === 'high' ? 'danger' : event.severity === 'medium' ? 'warning' : 'success'} className="mt-2 text-xs">
-                                  {event.severity}
-                                </Badge>
-                              </div>
+                        <div key={index} className="p-3 rounded-xl bg-surface-secondary/50 border border-border/50">
+                          <div className="flex items-start gap-3">
+                            <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0', event.severity === 'high' && 'bg-red-500/20', event.severity === 'medium' && 'bg-yellow-500/20', event.severity === 'low' && 'bg-green-500/20')}>
+                              {event.severity === 'high' && <AlertTriangle className="w-4 h-4 text-red-400" />}
+                              {event.severity === 'medium' && <AlertTriangle className="w-4 h-4 text-yellow-400" />}
+                              {event.severity === 'low' && <ShieldCheck className="w-4 h-4 text-green-400" />}
+                            </div>
+                            <div className="flex-1">
+                              <p className="font-medium text-primary-text">{event.signal.replace(/_/g, ' ')}</p>
+                              <p className="text-sm text-secondary-text mt-1">{event.description}</p>
+                              <Badge variant={event.severity === 'high' ? 'danger' : event.severity === 'medium' ? 'warning' : 'success'} className="mt-2 text-xs">
+                                {event.severity}
+                              </Badge>
                             </div>
                           </div>
-                        </Animated>
+                        </div>
                       ))}
                     </div>
                   ) : (
@@ -413,7 +411,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
           </Tabs>
         </div>
 
-        <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
+        <div>
           <Card variant="elevated" className="sticky top-24">
             <h3 className="font-medium text-primary-text mb-4">Quick Actions</h3>
             <div className="space-y-2">
@@ -446,7 +444,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   { label: 'Contacts', score: verification.contact_score },
                   { label: 'Risk (inverted)', score: 100 - verification.risk_score },
                 ].map((item, index) => (
-                  <div key={item.label} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
+                  <div key={item.label}>
                     <div className="flex items-center justify-between">
                       <span className="text-secondary-text">{item.label}</span>
                       <span className={cn('font-mono font-bold', item.score >= 70 ? 'text-green-400' : item.score >= 40 ? 'text-yellow-400' : 'text-red-400')}>
