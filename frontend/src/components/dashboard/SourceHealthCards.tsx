@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import {
   Database,
@@ -11,6 +10,7 @@ import {
   WifiOff,
   RefreshCw,
 } from 'lucide-react'
+import { SlideUp } from '@/components/ui/Animated'
 
 interface SourceHealthItem {
   source: string
@@ -65,44 +65,40 @@ export function SourceHealthCards({ sources, className }: SourceHealthCardsProps
       ) : (
         <div className="space-y-3">
           {sources.map((source, index) => (
-            <motion.div
-              key={source.source}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50 hover:border-border transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center">
-                  {STATUS_ICONS[source.status] || <Database className="w-5 h-5 text-secondary-text" />}
+            <SlideUp key={source.source} delay={index * 50}>
+              <div className="flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50 hover:border-border transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center">
+                    {STATUS_ICONS[source.status] || <Database className="w-5 h-5 text-secondary-text" />}
+                  </div>
+                  <div>
+                    <p className="font-medium text-primary-text">{source.source}</p>
+                    <p className="text-xs text-secondary-text">
+                      {source.jobs_collected} jobs collected
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium text-primary-text">{source.source}</p>
-                  <p className="text-xs text-secondary-text">
-                    {source.jobs_collected} jobs collected
-                  </p>
+
+                <div className="flex items-center gap-3">
+                  <span className={cn('badge px-2 py-1', STATUS_BADGE[source.status] || STATUS_BADGE.unavailable)}>
+                    {STATUS_LABELS[source.status] || source.status}
+                  </span>
+
+                  {source.last_sync && (
+                    <span className="flex items-center gap-1 text-xs text-secondary-text">
+                      <Clock className="w-3 h-3" />
+                      {new Date(source.last_sync).toLocaleDateString()}
+                    </span>
+                  )}
+
+                  {source.last_error && (
+                    <span className="text-xs text-red-400 truncate max-w-[150px]" title={source.last_error}>
+                      {source.last_error}
+                    </span>
+                  )}
                 </div>
               </div>
-
-              <div className="flex items-center gap-3">
-                <span className={cn('badge px-2 py-1', STATUS_BADGE[source.status] || STATUS_BADGE.unavailable)}>
-                  {STATUS_LABELS[source.status] || source.status}
-                </span>
-
-                {source.last_sync && (
-                  <span className="flex items-center gap-1 text-xs text-secondary-text">
-                    <Clock className="w-3 h-3" />
-                    {new Date(source.last_sync).toLocaleDateString()}
-                  </span>
-                )}
-
-                {source.last_error && (
-                  <span className="text-xs text-red-400 truncate max-w-[150px]" title={source.last_error}>
-                    {source.last_error}
-                  </span>
-                )}
-              </div>
-            </motion.div>
+            </SlideUp>
           ))}
         </div>
       )}
@@ -115,4 +111,3 @@ export function SourceHealthCards({ sources, className }: SourceHealthCardsProps
     </div>
   )
 }
-
