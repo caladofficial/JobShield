@@ -9,14 +9,14 @@ interface FadeInProps extends HTMLAttributes<HTMLDivElement> {
   duration?: number
 }
 
-const FadeIn = ({ 
+export default function FadeIn({ 
   children, 
   className, 
   delay = 0, 
   duration = 300, 
   style, 
   ...props 
-}: FadeInProps) => {
+}: FadeInProps) {
   const animationStyle = {
     animationDelay: `${delay}ms`,
     animationDuration: `${duration}ms`,
@@ -32,5 +32,3 @@ const FadeIn = ({
     </div>
   )
 }
-
-export default FadeIn

@@ -9,14 +9,14 @@ interface SlideUpProps extends HTMLAttributes<HTMLDivElement> {
   duration?: number
 }
 
-const SlideUp = ({ 
+export default function SlideUp({ 
   children, 
   className, 
   delay = 0, 
   duration = 300, 
   style, 
   ...props 
-}: SlideUpProps) => {
+}: SlideUpProps) {
   const animationStyle = {
     animationDelay: `${delay}ms`,
     animationDuration: `${duration}ms`,
@@ -32,5 +32,3 @@ const SlideUp = ({
     </div>
   )
 }
-
-export default SlideUp
