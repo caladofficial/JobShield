@@ -226,8 +226,8 @@ export default function JobsPage() {
       accessor: 'contacts',
       cell: (job: JobListItem) => (
         <div className="flex items-center gap-1">
-          {job.has_email && <Mail className="w-3.5 h-3.5 text-green-400" title="Email" />}
-          {job.has_phone && <Phone className="w-3.5 h-3.5 text-blue-400" title="Phone" />}
+          {job.has_email && <Mail className="w-3.5 h-3.5 text-green-400" />}
+          {job.has_phone && <Phone className="w-3.5 h-3.5 text-blue-400" />}
         </div>
       ),
     },
