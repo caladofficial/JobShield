@@ -12,7 +12,7 @@ import {
   Legend,
 } from 'recharts'
 import { cn } from '@/lib/utils'
-import { Animated } from '@/components/ui/Animated'
+import { ScaleIn } from '@/components/ui/Animated'
 
 interface ChartDataPoint {
   label: string
@@ -85,9 +85,9 @@ export function RiskDistributionChart({ data, className }: RiskDistributionChart
             maxBarWidth={50}
           >
             {data.map((entry, index) => (
-              <Animated key={index} initial="scaleIn" delay={index * 100}>
+              <ScaleIn key={index} delay={index * 100}>
                 <Cell fill={RISK_COLORS[entry.label.toLowerCase()] || '#6B7280'} />
-              </Animated>
+              </ScaleIn>
             ))}
           </Bar>
         </BarChart>

@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'recharts'
 import { cn } from '@/lib/utils'
-import { Animated } from '@/components/ui/Animated'
+import { FadeIn, ScaleIn } from '@/components/ui/Animated'
 
 interface ChartDataPoint {
   label: string
@@ -52,9 +52,9 @@ export function JobsBySourceChart({ data, className }: JobsBySourceChartProps) {
             labelStyle={{ fill: '#F2F2F2', fontSize: 11, fontFamily: 'Inter' }}
           >
             {data.map((entry, index) => (
-              <Animated key={`cell-${index}`} initial="scaleIn" delay={index * 100}>
+              <ScaleIn key={`cell-${index}`} delay={index * 100}>
                 <Cell fill={COLORS[index % COLORS.length]} />
-              </Animated>
+              </ScaleIn>
             ))}
           </Pie>
           <Tooltip
@@ -76,12 +76,12 @@ export function JobsBySourceChart({ data, className }: JobsBySourceChartProps) {
           />
         </PieChart>
       </ResponsiveContainer>
-      <Animated initial="scaleIn" delay={500} className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <FadeIn delay={500} className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="text-center">
           <p className="text-2xl font-bold font-mono text-primary-text">{total.toLocaleString()}</p>
           <p className="text-xs text-secondary-text">Total Jobs</p>
         </div>
-      </Animated>
+      </FadeIn>
     </div>
   )
 }

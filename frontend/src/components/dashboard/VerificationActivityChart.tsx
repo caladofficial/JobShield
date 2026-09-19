@@ -3,6 +3,7 @@
 import {
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -10,7 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { cn } from '@/lib/utils'
-import { Animated } from '@/components/ui/Animated'
+import { ScaleIn } from '@/components/ui/Animated'
 
 interface ChartDataPoint {
   label: string
@@ -62,9 +63,9 @@ export function VerificationActivityChart({ data, className }: VerificationActiv
             maxBarWidth={40}
           >
             {data.map((entry, index) => (
-              <Animated key={index} initial="scaleIn" delay={index * 100}>
+              <ScaleIn key={index} delay={index * 100}>
                 <Cell fill="#A8FF60" />
-              </Animated>
+              </ScaleIn>
             ))}
           </Bar>
         </BarChart>
