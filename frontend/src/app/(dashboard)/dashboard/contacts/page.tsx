@@ -8,9 +8,6 @@ import { DataTable } from '@/components/ui/DataTable'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
-import FadeIn from '@/components/ui/FadeIn'
-import SlideUp from '@/components/ui/SlideUp'
-import SlideDown from '@/components/ui/SlideDown'
 import {
   Mail,
   Phone,
@@ -189,7 +186,7 @@ export default function ContactsPage() {
   ]
 
   return (
-    <FadeIn duration={300}>
+    <div className="animate-fade-in" style={{ animationDuration: '300ms' }}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-primary-text">Contacts</h1>
@@ -202,12 +199,24 @@ export default function ContactsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-        <SlideUp delay={0}><StatCard label="Total Contacts" value={stats.total_contacts} icon={<Mail />} color="text-blue-400" bg="bg-blue-500/10" /></SlideUp>
-        <SlideUp delay={50}><StatCard label="Corporate Emails" value={stats.corporate_emails} icon={<Building2 />} color="text-green-400" bg="bg-green-500/10" /></SlideUp>
-        <SlideUp delay={100}><StatCard label="Free Mail" value={stats.free_mail_addresses} icon={<Mail />} color="text-yellow-400" bg="bg-yellow-500/10" /></SlideUp>
-        <SlideUp delay={150}><StatCard label="Valid Phones" value={stats.valid_phones} icon={<Phone />} color="text-orange-400" bg="bg-orange-500/10" /></SlideUp>
-        <SlideUp delay={200}><StatCard label="Invalid" value={stats.invalid_contacts} icon={<XCircle />} color="text-red-400" bg="bg-red-500/10" /></SlideUp>
-        <SlideUp delay={250}><StatCard label="Unverified" value={stats.unverified_contacts} icon={<HelpCircle />} color="text-gray-400" bg="bg-gray-500/10" /></SlideUp>
+        <div className="animate-slide-up" style={{ animationDelay: '0ms' }}>
+          <StatCard label="Total Contacts" value={stats.total_contacts} icon={<Mail />} color="text-blue-400" bg="bg-blue-500/10" />
+        </div>
+        <div className="animate-slide-up" style={{ animationDelay: '50ms' }}>
+          <StatCard label="Corporate Emails" value={stats.corporate_emails} icon={<Building2 />} color="text-green-400" bg="bg-green-500/10" />
+        </div>
+        <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
+          <StatCard label="Free Mail" value={stats.free_mail_addresses} icon={<Mail />} color="text-yellow-400" bg="bg-yellow-500/10" />
+        </div>
+        <div className="animate-slide-up" style={{ animationDelay: '150ms' }}>
+          <StatCard label="Valid Phones" value={stats.valid_phones} icon={<Phone />} color="text-orange-400" bg="bg-orange-500/10" />
+        </div>
+        <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
+          <StatCard label="Invalid" value={stats.invalid_contacts} icon={<XCircle />} color="text-red-400" bg="bg-red-500/10" />
+        </div>
+        <div className="animate-slide-up" style={{ animationDelay: '250ms' }}>
+          <StatCard label="Unverified" value={stats.unverified_contacts} icon={<HelpCircle />} color="text-gray-400" bg="bg-gray-500/10" />
+        </div>
       </div>
 
       <Card className="p-4">
@@ -229,9 +238,9 @@ export default function ContactsPage() {
           </Button>
         </div>
 
-        <SlideDown className="mt-4 pt-4 border-t border-border grid grid-cols-1 sm:grid-cols-4 gap-3">
+        <div className={cn('transition-all duration-200 overflow-hidden', showFilters ? 'h-auto opacity-100' : 'h-0 opacity-0')}>
           {showFilters && (
-            <>
+            <div className="mt-4 pt-4 border-t border-border grid grid-cols-1 sm:grid-cols-4 gap-3">
               <select
                 value={filters.contact_type}
                 onChange={(e) => setFilters(prev => ({ ...prev, contact_type: e.target.value }))}
@@ -253,12 +262,12 @@ export default function ContactsPage() {
               >
                 {CORPORATE_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
               </select>
-            </>
+            </div>
           )}
-        </Animated>
+        </div>
       </Card>
 
-      <SlideUp delay={200}>
+      <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
         <DataTable
           columns={columns}
           data={contacts}
@@ -272,10 +281,10 @@ export default function ContactsPage() {
             onPageSizeChange: setPageSize,
           }}
         />
-</SlideUp>
-      </FadeIn>
-    )
-  }
+      </div>
+    </div>
+  )
+}
 
 function StatCard({ label, value, icon: Icon, color, bg }: any) {
   return (

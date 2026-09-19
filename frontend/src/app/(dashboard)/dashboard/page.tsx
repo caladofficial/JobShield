@@ -22,8 +22,6 @@ import { SourceHealthCards } from '@/components/dashboard/SourceHealthCards'
 import { analyticsApi } from '@/lib/api'
 import { DashboardResponse } from '@/types/dashboard'
 import { cn } from '@/lib/utils'
-import FadeIn from '@/components/ui/FadeIn'
-import SlideUp from '@/components/ui/SlideUp'
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardResponse | null>(null)
@@ -64,9 +62,9 @@ export default function DashboardPage() {
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((_, i) => (
-            <FadeIn key={i} delay={i * 50}>
+            <div key={i} className="animate-slide-up" style={{ animationDelay: `${i * 50}ms` }}>
               <StatCardSkeleton />
-            </FadeIn>
+            </div>
           ))}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -97,7 +95,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <FadeIn duration={300}>
+    <div className="animate-fade-in" style={{ animationDuration: '300ms' }}>
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-primary-text">Dashboard</h1>
@@ -111,7 +109,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {stats.map((stat, index) => (
-          <SlideUp key={stat.label} delay={index * 50}>
+          <div key={stat.label} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
             <StatCard
               label={stat.label}
               value={stat.value}
@@ -119,12 +117,12 @@ export default function DashboardPage() {
               iconColor={stat.color}
               iconBg={stat.bg}
             />
-          </SlideUp>
+          </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <SlideUp delay={100}>
+        <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Verification Activity</h3>
@@ -132,9 +130,9 @@ export default function DashboardPage() {
             </div>
             <VerificationActivityChart data={data?.verification_activity.data ?? []} />
           </Card>
-        </SlideUp>
+        </div>
 
-        <SlideUp delay={150}>
+        <div className="animate-slide-up" style={{ animationDelay: '150ms' }}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Jobs by Source</h3>
@@ -142,9 +140,9 @@ export default function DashboardPage() {
             </div>
             <JobsBySourceChart data={data?.jobs_by_source.data ?? []} />
           </Card>
-        </SlideUp>
+        </div>
 
-        <SlideUp delay={200}>
+        <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium text-primary-text">Risk Distribution</h3>
@@ -152,20 +150,20 @@ export default function DashboardPage() {
             </div>
             <RiskDistributionChart data={data?.risk_distribution.data ?? []} />
           </Card>
-        </SlideUp>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <SlideUp delay={250}>
+        <div className="animate-slide-up" style={{ animationDelay: '250ms' }}>
           <RecentJobsTable jobs={data?.recent_jobs ?? []} />
-        </SlideUp>
+        </div>
 
-        <SlideUp delay={300}>
+        <div className="animate-slide-up" style={{ animationDelay: '300ms' }}>
           <SourceHealthCards sources={data?.source_health ?? []} />
-        </SlideUp>
+        </div>
       </div>
 
-      <SlideUp delay={350}>
+      <div className="animate-slide-up" style={{ animationDelay: '350ms' }}>
         <Card>
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-medium text-primary-text">Recent Activity</h3>
@@ -173,7 +171,7 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin">
             {data?.recent_events?.map((event, index) => (
-              <SlideUp key={index} delay={400 + index * 50}>
+              <div key={index} className="animate-slide-up" style={{ animationDelay: `${400 + index * 50}ms` }}>
                 <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-secondary/50">
                   <div className="w-2 h-2 rounded-full bg-accent" />
                   <div className="flex-1 min-w-0">
@@ -184,15 +182,15 @@ export default function DashboardPage() {
                     {event.level}
                   </span>
                 </div>
-              </SlideUp>
+              </div>
             ))}
             {(!data?.recent_events || data.recent_events.length === 0) && (
               <p className="text-secondary-text text-center py-8">No recent activity</p>
             )}
           </div>
         </Card>
-      </SlideUp>
-    </FadeIn>
+      </div>
+    </div>
   )
 }
 

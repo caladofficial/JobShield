@@ -8,8 +8,6 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs'
-import FadeIn from '@/components/ui/FadeIn'
-import SlideUp from '@/components/ui/SlideUp'
 import {
   ExternalLink,
   ShieldCheck,
@@ -104,7 +102,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <FadeIn duration={300}>
+    <div className="animate-fade-in" style={{ animationDuration: '300ms' }}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -131,7 +129,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <Animated initial="slideUp" delay={100} className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList className="bg-surface-secondary rounded-xl p-1">
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -200,7 +198,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   {job.contacts && job.contacts.length > 0 ? (
                     <div className="space-y-3">
                       {job.contacts.map((contact: ContactInfo, index) => (
-                        <Animated key={index} initial="slideUp" delay={index * 50}>
+                        <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
                           <div className="flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50">
                             <div className="flex items-center gap-3">
                               {contact.type === 'email' && <Mail className="w-5 h-5 text-green-400" />}
@@ -226,7 +224,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                               </Badge>
                             </div>
                           </div>
-                        </Animated>
+                        </div>
                       ))}
                     </div>
                   ) : (
@@ -256,7 +254,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                         const signals = verification[`${stage.key}_signals`] as Record<string, any>
 
                         return (
-                          <Animated key={stage.key} initial="slideUp" delay={index * 50}>
+                          <div key={stage.key} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
                             <button
                               onClick={() => toggleSection(stage.key)}
                               className="w-full flex items-center justify-between p-3 rounded-xl bg-surface-secondary/50 border border-border/50 hover:border-border transition-colors"
@@ -280,8 +278,8 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                                 <ChevronDown className={cn('w-4 h-4 text-secondary-text transition-transform', expandedSections[stage.key] && 'rotate-180')} />
                               </div>
                             </button>
-                            <Animated initial="slideDown" className="mt-2 ml-14 space-y-2" key={`${stage.key}-details`}>
-                              {expandedSections[stage.key] && Object.entries(signals).map(([key, value]) => (
+                            <div className={cn('mt-2 ml-14 space-y-2', expandedSections[stage.key] ? 'animate-slide-down' : 'hidden')}>
+                              {Object.entries(signals).map(([key, value]) => (
                                 <div key={key} className="flex items-center justify-between text-sm">
                                   <span className="text-secondary-text">{key.replace(/_/g, ' ')}</span>
                                   <span className={value ? 'text-green-400' : 'text-red-400'}>
@@ -289,8 +287,8 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                                   </span>
                                 </div>
                               ))}
-                            </Animated>
-                          </Animated>
+                            </div>
+                          </div>
                         )
                       })}
                     </div>
@@ -363,7 +361,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   {riskEvents.length > 0 ? (
                     <div className="space-y-3">
                       {riskEvents.map((event, index) => (
-                        <Animated key={index} initial="slideUp" delay={index * 50}>
+                        <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
                           <div className="p-3 rounded-xl bg-surface-secondary/50 border border-border/50">
                             <div className="flex items-start gap-3">
                               <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0', event.severity === 'high' && 'bg-red-500/20', event.severity === 'medium' && 'bg-yellow-500/20', event.severity === 'low' && 'bg-green-500/20')}>
@@ -413,9 +411,9 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
               </Card>
             </TabsContent>
           </Tabs>
-        </Animated>
+        </div>
 
-        <Animated initial="slideUp" delay={200}>
+        <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
           <Card variant="elevated" className="sticky top-24">
             <h3 className="font-medium text-primary-text mb-4">Quick Actions</h3>
             <div className="space-y-2">
@@ -448,7 +446,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                   { label: 'Contacts', score: verification.contact_score },
                   { label: 'Risk (inverted)', score: 100 - verification.risk_score },
                 ].map((item, index) => (
-                  <Animated key={item.label} initial="slideUp" delay={index * 50}>
+                  <div key={item.label} className="animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
                     <div className="flex items-center justify-between">
                       <span className="text-secondary-text">{item.label}</span>
                       <span className={cn('font-mono font-bold', item.score >= 70 ? 'text-green-400' : item.score >= 40 ? 'text-yellow-400' : 'text-red-400')}>
@@ -461,14 +459,14 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
                         style={{ width: `${item.score}%` }}
                       />
                     </div>
-                  </Animated>
+                  </div>
                 ))}
               </dl>
             </div>
           </Card>
-        </Animated>
+        </div>
       </div>
-    </Animated>
+    </div>
   )
 }
 
