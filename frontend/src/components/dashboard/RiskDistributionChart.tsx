@@ -82,7 +82,6 @@ export function RiskDistributionChart({ data, className }: RiskDistributionChart
           <Bar
             dataKey="value"
             radius={[4, 4, 0, 0]}
-            maxBarWidth={50}
           >
             {data.map((entry, index) => (
               <ScaleIn key={index} delay={index * 100}>
