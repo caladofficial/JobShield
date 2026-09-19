@@ -8,7 +8,8 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs'
-import { FadeIn, SlideUp } from '@/components/ui/Animated'
+import { FadeIn } from '@/components/ui/FadeIn'
+import { SlideUp } from '@/components/ui/SlideUp'
 import {
   ExternalLink,
   ShieldCheck,

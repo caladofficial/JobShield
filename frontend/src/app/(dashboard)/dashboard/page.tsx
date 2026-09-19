@@ -22,7 +22,8 @@ import { SourceHealthCards } from '@/components/dashboard/SourceHealthCards'
 import { analyticsApi } from '@/lib/api'
 import { DashboardResponse } from '@/types/dashboard'
 import { cn } from '@/lib/utils'
-import { FadeIn, SlideUp } from '@/components/ui/Animated'
+import { FadeIn } from '@/components/ui/FadeIn'
+import { SlideUp } from '@/components/ui/SlideUp'
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardResponse | null>(null)
