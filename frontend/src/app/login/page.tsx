@@ -166,5 +166,3 @@ export default function LoginPage() {
     </div>
   )
 }
-
-import { Loader2 } from 'lucide-react'
