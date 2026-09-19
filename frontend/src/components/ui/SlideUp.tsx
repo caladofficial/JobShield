@@ -2,21 +2,21 @@
 
 import { ReactNode, HTMLAttributes } from 'react'
 
-interface SlideUpProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+interface SlideUpProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode
   className?: string
   delay?: number
   duration?: number
 }
 
-export function SlideUp({ 
+const SlideUp = ({ 
   children, 
   className, 
   delay = 0, 
   duration = 300, 
   style, 
   ...props 
-}: SlideUpProps) {
+}: SlideUpProps) => {
   const animationStyle = {
     animationDelay: `${delay}ms`,
     animationDuration: `${duration}ms`,
@@ -32,3 +32,5 @@ export function SlideUp({
     </div>
   )
 }
+
+export default SlideUp

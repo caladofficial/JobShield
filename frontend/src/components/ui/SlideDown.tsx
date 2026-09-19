@@ -9,14 +9,14 @@ interface SlideDownProps extends HTMLAttributes<HTMLDivElement> {
   duration?: number
 }
 
-export function SlideDown({ 
+const SlideDown = ({ 
   children, 
   className, 
   delay = 0, 
   duration = 300, 
   style, 
   ...props 
-}: SlideDownProps) {
+}: SlideDownProps) => {
   const animationStyle = {
     animationDelay: `${delay}ms`,
     animationDuration: `${duration}ms`,
@@ -32,3 +32,5 @@ export function SlideDown({
     </div>
   )
 }
+
+export default SlideDown
