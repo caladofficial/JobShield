@@ -392,7 +392,7 @@ export default function JobsPage() {
             <label className="block text-sm font-medium text-secondary-text mb-1">Source (Optional)</label>
             <Select
               value={scanSourceId}
-              onValueChange={setScanSourceId}
+              onChange={(e) => setScanSourceId(e.target.value)}
               options={[{ value: '', label: 'Auto-detect' }, ...sources.map(s => ({ value: String(s.id), label: s.display_name }))]}
               placeholder="Select source"
               disabled={scanning}
