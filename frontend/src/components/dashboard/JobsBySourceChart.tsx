@@ -49,7 +49,6 @@ export function JobsBySourceChart({ data, className }: JobsBySourceChartProps) {
             nameKey="label"
             label={({ label, percent }) => `${label} ${(percent * 100).toFixed(0)}%`}
             labelLine={false}
-            labelStyle={{ fill: '#F2F2F2', fontSize: 11, fontFamily: 'Inter' }}
           >
             {data.map((entry, index) => (
               <ScaleIn key={`cell-${index}`} delay={index * 100}>
